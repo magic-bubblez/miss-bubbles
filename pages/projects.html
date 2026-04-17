@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>projects · ms. bubbles</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fff4e0;
+      --card: #fff0d8;
+      --border: #e8cfa8;
+      --border-soft: #f0dcbc;
+      --ink: #5a3a1e;
+      --ink-soft: #7a5432;
+      --muted: #8a704f;
+
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(186, 91, 107);
+      --peach: #e8a67a;
+      --gold: #c9a04a;
+      --sage: #8ba974;
+      --sky: #7eaecf;
+      --lilac: #b59ad4;
+
+      --shadow: 2px 2px 0 rgba(74, 46, 22, 0.15);
+      --shadow-lg: 3px 3px 0 rgba(74, 46, 22, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 15.5px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--rose-deep);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 30px 26px 80px;
+    }
+
+    /* shared nav */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 0px solid var(--border);
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo img {
+      width: 44px;
+      height: 44px;
+    }
+
+    .nav-logo a {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 26px;
+      color: var(--rose-dark);
+      letter-spacing: 0.005em;
+    }
+
+    .nav-logo a::after {
+      content: ' ♡';
+      color: var(--rose);
+      font-family: system-ui, sans-serif;
+      font-style: normal;
+      font-size: 15px;
+      vertical-align: 3px;
+      margin-left: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      font-size: 16px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+    }
+
+    .nav-links a.on {
+      color: var(--ink);
+    }
+
+    /* page head */
+    .head-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .page-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 46px;
+      line-height: 1;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .head-kao {
+      color: var(--rose-deep);
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .intro {
+      color: var(--ink-soft);
+      font-size: 15px;
+      max-width: 560px;
+      margin: 6px 0 40px;
+    }
+
+    /* two-column: left index, right pinboard */
+    .layout {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* index column */
+    .index {
+      position: sticky;
+      top: 24px;
+    }
+
+    .index-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .index-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .index-list li {
+      margin-bottom: 4px;
+    }
+
+    .index-list a {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 17px;
+      color: var(--ink-soft);
+      display: block;
+      padding: 3px 0;
+      transition: color 0.15s, transform 0.15s;
+    }
+
+    .index-list a:hover {
+      color: var(--rose-deep);
+      transform: translateX(3px);
+    }
+
+    .index-gif {
+      width: 48px;
+      height: 48px;
+      margin-top: 20px;
+      opacity: 0.85;
+    }
+
+    /* pinboard */
+    .pinboard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .pin {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+
+    .pin:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .pin-name {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22px;
+      line-height: 1.1;
+      margin-bottom: 5px;
+    }
+
+    .pin:nth-child(7n+1) .pin-name {
+      color: var(--rose-deep);
+    }
+
+    .pin:nth-child(7n+2) .pin-name {
+      color: var(--peach);
+    }
+
+    .pin:nth-child(7n+3) .pin-name {
+      color: var(--gold);
+    }
+
+    .pin:nth-child(7n+4) .pin-name {
+      color: var(--sage);
+    }
+
+    .pin:nth-child(7n+5) .pin-name {
+      color: var(--sky);
+    }
+
+    .pin:nth-child(7n+6) .pin-name {
+      color: var(--lilac);
+    }
+
+    .pin:nth-child(7n) .pin-name {
+      color: var(--rose-deep);
+    }
+
+    .pin-desc {
+      color: var(--ink-soft);
+      font-size: 13px;
+      line-height: 1.5;
+      flex: 1;
+      margin-bottom: 10px;
+    }
+
+    .pin-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pin-stack {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      color: var(--rose-deep);
+      letter-spacing: 0.02em;
+    }
+
+    .pin-stack .sep {
+      color: var(--rose);
+      opacity: 0.5;
+      margin: 0 3px;
+    }
+
+    .pin-links {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      display: flex;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .pin-links a {
+      color: var(--ink-soft);
+    }
+
+    .pin-links a:hover {
+      color: var(--rose-deep);
+    }
+
+    /* foot */
+    .foot {
+      margin-top: 72px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .foot-gif {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 8px;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .socials img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.6;
+    }
+
+    .socials a:hover img {
+      opacity: 1;
+    }
+
+    .copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 700px) {
+      .pinboard {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .pinboard {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page-title {
+        font-size: 36px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <nav class="nav">
+      <div class="nav-logo">
+        <a href="../index.html">ms. bubbles</a>
+      </div>
+      <div class="nav-links">
+        <a href="../index.html">about</a>
+        <a href="work.html">work</a>
+        <a href="projects.html" class="on">projects</a>
+        <a href="writing.html">writing</a>
+        <a href="collections.html">collections</a>
+      </div>
+    </nav>
+
+    <div class="head-row">
+      <h1 class="page-title">projects</h1>
+      <span class="head-kao">(⸝⸝๑﹏๑⸝⸝)</span>
+    </div>
+    <p class="intro">small stuff i've made...just because.</p>
+
+    <div class="pinboard">
+
+      <article class="pin" id="voice-agent">
+        <div class="pin-name">local voice-controlled agent</div>
+        <p class="pin-desc">say a command, it transcribes, understands intent &amp; executes tools on your machine.
+          runs entirely on-device. no cloud, no APIs.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">python <span class="sep">·</span> whisper <span class="sep">·</span> ollama</div>
+          <div class="pin-links"><a href="https://github.com/magic-bubblez/local-voice-controlled-agent">repo</a></div>
+        </div>
+      </article>
+
+      <article class="pin" id="bublet">
+        <div class="pin-name">Bublet</div>
+        <p class="pin-desc">a link-hoarder app. Go backend + postgres on ec2, paired with a firefox extension for
+          instant browser sync.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">go <span class="sep">·</span> postgres <span class="sep">·</span> ec2</div>
+          <div class="pin-links"><a href="https://bublet.app/">demo</a><a
+              href="https://github.com/magic-bubblez/link-hoarder">repo</a></div>
+        </div>
+      </article>
+
+      <article class="pin" id="bubblelan">
+        <div class="pin-name">BubbleLan</div>
+        <p class="pin-desc">a minimal interpreted programming language. recursive-descent parser, REPL, operator
+          precedence, loops &amp; conditionals.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">python <span class="sep">·</span> parser</div>
+          <div class="pin-links"><a href="https://github.com/magic-bubblez/BubbleLan">repo</a><a
+              href="https://medium.com/@ritvika780/what-it-takes-to-build-a-programming-language-60ebe8d84078">blog</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="pin" id="go-programs">
+        <div class="pin-name">go-programs</div>
+        <p class="pin-desc">a growing collection of tiny Go tools &amp; servers from scratch — cat, wc, parallel wc,
+          web scraper (worker pool), TCP chat servers (echo + broadcast), race-condition demos.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">go <span class="sep">·</span> concurrency <span class="sep">·</span> systems</div>
+          <div class="pin-links"><a href="https://github.com/magic-bubblez/go-programs">repo</a></div>
+        </div>
+      </article>
+
+      <article class="pin" id="hot">
+        <div class="pin-name">Is Your Code Hot?</div>
+        <p class="pin-desc">"hot or not" but for github repos. rate them head-to-head, elo-style.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">python <span class="sep">·</span> gh api</div>
+          <div class="pin-links"><a href="https://isyourcodehot.onrender.com/">demo</a><a
+              href="https://medium.com/@ritvika780/how-to-build-a-hot-or-not-for-github-48f22e562ab4">blog</a></div>
+        </div>
+      </article>
+
+      <article class="pin" id="chain">
+        <div class="pin-name">Chain of Trust</div>
+        <p class="pin-desc">an ongoing, slightly stupid game about who-trusts-whom. still cooking.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">wip</div>
+          <div class="pin-links"><a href="https://chainoftrust.onrender.com/">demo</a></div>
+        </div>
+      </article>
+
+      <article class="pin" id="container">
+        <div class="pin-name">go-container</div>
+        <p class="pin-desc">a minimal linux container in go. namespaces, cgroups, chroot. mostly to understand
+          docker's duct tape.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">go <span class="sep">·</span> linux</div>
+          <div class="pin-links"><a href="https://github.com/magic-bubblez/go-container">repo</a></div>
+        </div>
+      </article>
+
+      <article class="pin" id="viz">
+        <div class="pin-name">music visualizer</div>
+        <p class="pin-desc">tiny audio visualizer. matplotlib + fft. looks better than it has any right to.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">python <span class="sep">·</span> fft</div>
+          <div class="pin-links"><a href="https://github.com/magic-bubblez/music_visualizer">repo</a></div>
+        </div>
+      </article>
+
+      <article class="pin" id="url">
+        <div class="pin-name">url-shortener</div>
+        <p class="pin-desc">a baby url shortener. nothing fancy, just a rite of passage.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">python</div>
+          <div class="pin-links"><a href="https://github.com/magic-bubblez/url-shortener">repo</a></div>
+        </div>
+      </article>
+
+      <article class="pin" id="snake">
+        <div class="pin-name">snake</div>
+        <p class="pin-desc">the classic, hand-rolled in vanilla js. runs in the browser.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">js <span class="sep">·</span> canvas</div>
+          <div class="pin-links"><a href="https://magic-bubblez.github.io/snake-game/">play</a></div>
+        </div>
+      </article>
+
+      <article class="pin" id="drum">
+        <div class="pin-name">drumkit</div>
+        <p class="pin-desc">a trashy stupid drumkit. not worth mentioning but here we are.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">js <span class="sep">·</span> audio</div>
+          <div class="pin-links"><a href="https://magic-bubblez.github.io/drumkit/">play</a></div>
+        </div>
+      </article>
+
+    </div>
+
+    <footer class="foot">
+      <div class="socials">
+        <a href="mailto:ritvika780@gmail.com"><img src="../images/email.png" alt="email" /></a>
+        <a href="https://github.com/magic-bubblez"><img src="../images/github.png" alt="github" /></a>
+      </div>
+      <div class="copy">© ms. bubbles</div>
+    </footer>
+
+  </div>
+</body>
+
+</html>

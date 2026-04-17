@@ -1,0 +1,14 @@
+{
+  "name": "bubbles-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ms. bubbles portfolio + auto content pipeline",
+  "type": "commonjs",
+  "scripts": {
+    "update": "node scripts/update-content.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "rss-parser": "^3.13.0"
+  }
+}

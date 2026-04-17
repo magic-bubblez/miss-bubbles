@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>work · magicBubbles</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fff4e0;
+      --card: #fff0d8;
+      --border: #e8cfa8;
+      --border-soft: #f0dcbc;
+      --ink: #5a3a1e;
+      --ink-soft: #7a5432;
+      --muted: #8a704f;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(186, 91, 107);
+      --shadow: 2px 2px 0 rgba(74, 46, 22, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 15.5px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--rose-deep);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--ink);
+    }
+
+    b,
+    strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 30px 26px 80px;
+    }
+
+    /* shared nav */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 0;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo img {
+      width: 44px;
+      height: 44px;
+    }
+
+    .nav-logo a {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 26px;
+      color: var(--rose-dark);
+      letter-spacing: 0.005em;
+    }
+
+    .nav-logo a::after {
+      content: ' ♡';
+      color: var(--rose);
+      font-family: system-ui, sans-serif;
+      font-style: normal;
+      font-size: 15px;
+      vertical-align: 3px;
+      margin-left: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      font-size: 16px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+    }
+
+    .nav-links a.on {
+      color: var(--ink);
+    }
+
+    /* page head */
+    .page-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 42px;
+      line-height: 1;
+      color: var(--ink);
+      margin: 0 0 16px;
+    }
+
+    .intro {
+      color: var(--ink-soft);
+      font-size: 15.5px;
+      line-height: 1.7;
+      max-width: 600px;
+      margin-bottom: 20px;
+    }
+
+    .intro b {
+      color: var(--rose-dark);
+      font-weight: 500;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .resume-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 52px;
+    }
+
+    .resume-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--ink);
+      font-size: 13.5px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      transition: border-color 0.15s, color 0.15s, transform 0.12s, box-shadow 0.12s;
+    }
+
+    .resume-btn:hover {
+      border-color: var(--rose-deep);
+      color: var(--rose-deep);
+      transform: translate(-1px, -1px);
+      box-shadow: 3px 3px 0 rgba(74, 46, 22, 0.18);
+    }
+
+    .resume-btn .arrow {
+      color: var(--rose-deep);
+      font-size: 13px;
+    }
+
+    .resume-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    /* timeline */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 10px;
+      bottom: 10px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .role {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .role::before {
+      content: '';
+      position: absolute;
+      left: -24px;
+      top: 18px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--rose);
+      box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--border);
+    }
+
+    .role-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .role-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0 0 3px;
+    }
+
+    .role-company {
+      font-size: 14.5px;
+      margin-bottom: 8px;
+    }
+
+    .role-company a {
+      color: var(--rose-deep);
+    }
+
+    .role-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.8px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .tech-stack {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.7px;
+      color: var(--rose-deep);
+      margin-bottom: 14px;
+      letter-spacing: 0.01em;
+    }
+
+    .tech-stack .sep {
+      color: var(--rose);
+      opacity: 0.55;
+      margin: 0 1px;
+    }
+
+    .role-desc {
+      color: var(--ink-soft);
+      font-size: 14.5px;
+      line-height: 1.6;
+      margin: 0 0 12px;
+    }
+
+    .role-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .role-bullets li {
+      position: relative;
+      padding-left: 16px;
+      margin-bottom: 6px;
+      color: var(--ink-soft);
+      font-size: 14.5px;
+      line-height: 1.55;
+    }
+
+    .role-bullets li::before {
+      content: '*';
+      position: absolute;
+      left: 2px;
+      top: 0;
+      color: var(--rose-deep);
+      font-weight: 700;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: rgba(232, 160, 174, 0.12);
+      color: var(--rose-deep);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    /* foot */
+    .foot {
+      margin-top: 72px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .socials img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.6;
+      transition: opacity 0.15s;
+    }
+
+    .socials a:hover img {
+      opacity: 1;
+    }
+
+    .copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 560px) {
+      .page-title {
+        font-size: 34px;
+      }
+
+      .timeline {
+        padding-left: 20px;
+      }
+
+      .role::before {
+        left: -20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <nav class="nav">
+      <div class="nav-logo">
+        <a href="../index.html">ms. bubbles</a>
+      </div>
+      <div class="nav-links">
+        <a href="../index.html">about</a>
+        <a href="work.html" class="on">work</a>
+        <a href="projects.html">projects</a>
+        <a href="writing.html">writing</a>
+        <a href="collections.html">collections</a>
+      </div>
+    </nav>
+
+    <h1 class="page-title">work</h1>
+    <p class="intro">
+      CSE student focused on backend infrastructure. I care more about
+      architecture &amp; system design than any particular line of code. Heading toward
+      databases and distributed systems. <br>Lately also dabbling with AI &amp; LLMs,
+      building <b><a href="https://github.com/magic-bubblez/local-voice-controlled-agent">local-first agentic
+          systems</a></b> that run entirely on-device, no cloud, no APIs.
+    </p>
+    <div class="resume-row">
+      <a href="https://drive.google.com/file/d/160qoQeof2CIUdxlvBLtvRnEFTB1R7Zgr/view?usp=sharing" class="resume-btn"
+        target="_blank" rel="noopener">
+        <span class="arrow">↑</span> download resume
+      </a>
+      <span class="resume-meta">updated apr 2026</span>
+    </div>
+
+    <div class="timeline">
+
+      <article class="role">
+        <div class="role-card">
+          <h2 class="role-title">Software Engineer Intern</h2>
+          <div class="role-company">@ <a href="https://sdlc.works">sdlc.works</a></div>
+          <div class="role-meta">Nov 2025 to Mar 2026 · Remote, USA</div>
+
+          <div class="tech-stack">
+            Go <span class="sep">·</span> Pulumi <span class="sep">·</span> PostgreSQL <span class="sep">·</span> GORM
+            <span class="sep">·</span> Gin <span class="sep">·</span> FastAPI <span class="sep">·</span>
+            GCP <span class="sep">·</span> AWS IAM
+          </div>
+
+          <p class="role-desc">
+            <b>sdlc.works</b> orchestrates the entire software development lifecycle
+            under one control plane. Built backend infrastructure in <b>Go</b>: a cost
+            engine, artifact manager, credential validator, and audit logging.
+          </p>
+
+          <ul class="role-bullets">
+            <li>Built a <b>FinOps cost engine</b> in Go using Pulumi's <code>stack.preview</code> to intercept infra
+              changes, routing provider-specific calculators (GCP, Cloudflare) to the Infracost API.</li>
+            <li>Designed a DB-backed <b>artifact manager</b> (GORM/PostgreSQL) that verifies integrity per commit SHA,
+              enabling instant rollbacks without rebuilds.</li>
+            <li>Engineered a concurrent <b>credential validator</b> with goroutines, mapping permission intents to AWS
+              IAM and GCP roles.</li>
+            <li>Implemented <b>async audit logging</b> as Gin middleware, dispatching non-blocking writes to PostgreSQL
+              via goroutines.</li>
+            <li>Designed a JSON-based <b>test DSL</b> in Python (FastAPI, Pydantic) for end-to-end testing of async
+              workflows.</li>
+          </ul>
+        </div>
+      </article>
+
+    </div>
+
+    <footer class="foot">
+      <div class="socials">
+        <a href="mailto:ritvika780@gmail.com"><img src="../images/email.png" alt="email" /></a>
+        <a href="https://github.com/magic-bubblez"><img src="../images/github.png" alt="github" /></a>
+      </div>
+      <div class="copy">© miss bubbles</div>
+    </footer>
+
+  </div>
+</body>
+
+</html>
