@@ -26,6 +26,7 @@
       --sage: #8ba974;
       --sky: #7eaecf;
       --lilac: #b59ad4;
+      --forest-green: #22461c;
 
       --shadow: 2px 2px 0 rgba(74, 46, 22, 0.15);
       --shadow-lg: 3px 3px 0 rgba(74, 46, 22, 0.15);
@@ -286,7 +287,7 @@
 
     .pin-stack {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10.5px;
+      font-size: 12px;
       color: var(--rose-deep);
       letter-spacing: 0.02em;
     }
@@ -299,18 +300,19 @@
 
     .pin-links {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10.5px;
+      font-size: 12px;
       display: flex;
       gap: 8px;
       white-space: nowrap;
     }
 
     .pin-links a {
-      color: var(--ink-soft);
+      color: var(--forest-green);
+      font-weight: 600;
     }
 
     .pin-links a:hover {
-      color: var(--rose-deep);
+      color: var(--ink);
     }
 
     /* foot */
@@ -394,13 +396,30 @@
 
     <div class="pinboard">
 
+      <article class="pin" id="meniscus">
+        <div class="pin-name">Meniscus</div>
+        <p class="pin-desc">an external context layer for AI agents - persistent memory, tool registries &amp; session
+          state, decoupled from the model.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">python <span class="sep">·</span> agents</div>
+          <div class="pin-links"><a href="https://github.com/magic-bubblez/meniscus-" target="_blank"
+              rel="noopener">repo</a><a
+              href="https://magic-bubblez.bearblog.dev/i-built-an-external-context-layer-for-ai-agents-most-of-it-already-exists-heres-what-doesnt/"
+              target="_blank" rel="noopener">blog</a>
+          </div>
+        </div>
+      </article>
+
       <article class="pin" id="voice-agent">
         <div class="pin-name">local voice-controlled agent</div>
         <p class="pin-desc">say a command, it transcribes, understands intent &amp; executes tools on your machine.
           runs entirely on-device. no cloud, no APIs.</p>
         <div class="pin-foot">
           <div class="pin-stack">python <span class="sep">·</span> whisper <span class="sep">·</span> ollama</div>
-          <div class="pin-links"><a href="https://drive.google.com/file/d/1UhaDQwDeBv0v8JieB5jbk8k634iQ3hQV/view?usp=sharing" target="_blank" rel="noopener">demo</a><a href="https://github.com/magic-bubblez/local-voice-controlled-agent">repo</a></div>
+          <div class="pin-links"><a
+              href="https://drive.google.com/file/d/1UhaDQwDeBv0v8JieB5jbk8k634iQ3hQV/view?usp=sharing" target="_blank"
+              rel="noopener">demo</a><a href="https://github.com/magic-bubblez/local-voice-controlled-agent">repo</a>
+          </div>
         </div>
       </article>
 
@@ -429,11 +448,21 @@
 
       <article class="pin" id="go-programs">
         <div class="pin-name">go-programs</div>
-        <p class="pin-desc">a growing collection of tiny Go tools &amp; servers from scratch — cat, wc, parallel wc,
+        <p class="pin-desc">a growing collection of tiny Go tools &amp; servers from scratch - cat, wc, parallel wc,
           web scraper (worker pool), TCP chat servers (echo + broadcast), race-condition demos.</p>
         <div class="pin-foot">
           <div class="pin-stack">go <span class="sep">·</span> concurrency <span class="sep">·</span> systems</div>
           <div class="pin-links"><a href="https://github.com/magic-bubblez/go-programs">repo</a></div>
+        </div>
+      </article>
+
+      <article class="pin" id="container">
+        <div class="pin-name">go-container</div>
+        <p class="pin-desc">a minimal linux container in go. namespaces, cgroups, chroot. mostly to understand
+          docker's duct tape.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">go <span class="sep">·</span> linux</div>
+          <div class="pin-links"><a href="https://github.com/magic-bubblez/go-container">repo</a></div>
         </div>
       </article>
 
@@ -456,15 +485,6 @@
         </div>
       </article>
 
-      <article class="pin" id="container">
-        <div class="pin-name">go-container</div>
-        <p class="pin-desc">a minimal linux container in go. namespaces, cgroups, chroot. mostly to understand
-          docker's duct tape.</p>
-        <div class="pin-foot">
-          <div class="pin-stack">go <span class="sep">·</span> linux</div>
-          <div class="pin-links"><a href="https://github.com/magic-bubblez/go-container">repo</a></div>
-        </div>
-      </article>
 
       <article class="pin" id="viz">
         <div class="pin-name">music visualizer</div>
