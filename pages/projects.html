@@ -225,6 +225,8 @@
       display: flex;
       flex-direction: column;
       transition: transform 0.12s, box-shadow 0.12s;
+      min-width: 0;
+      overflow: hidden;
     }
 
     .pin:hover {
@@ -290,6 +292,8 @@
       font-size: 12px;
       color: var(--rose-deep);
       letter-spacing: 0.02em;
+      min-width: 0;
+      flex-shrink: 1;
     }
 
     .pin-stack .sep {
@@ -304,6 +308,8 @@
       display: flex;
       gap: 8px;
       white-space: nowrap;
+      flex-shrink: 0;
+      min-width: 0;
     }
 
     .pin-links a {
@@ -396,6 +402,28 @@
 
     <div class="pinboard">
 
+      <article class="pin" id="munshi">
+        <div class="pin-name">Munshi</div>
+        <p class="pin-desc">a testbed for Indian bureautcratic agentic workflows (mvp) </p>
+        <div class="pin-foot">
+          <div class="pin-stack">FastMCP<span class="sep">·</span>LangGraph<span class="sep">·</span>FastAPI<span class="sep">·</span>vanilla js + tailwind CDN</div>
+          <div class="pin-links"><a href="https://munshi-alpha.vercel.app/">demo</a><a href="https://github.com/magic-bubblez/munshi" target="_blank"
+              rel="noopener">repo</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="pin" id="dummy-infra">
+        <div class="pin-name">Dummy Infra</div>
+        <p class="pin-desc">a local aws cleanup simulation.</p>
+        <div class="pin-foot">
+          <div class="pin-stack">LocalStack<span class="sep">·</span>terraform<span class="sep">·</span>aws</div>
+          <div class="pin-links"><a href="https://github.com/magic-bubblez/dummy-infra" target="_blank"
+              rel="noopener">repo</a>
+          </div>
+        </div>
+      </article>
+
       <article class="pin" id="meniscus">
         <div class="pin-name">Meniscus</div>
         <p class="pin-desc">an external context layer for AI agents - persistent memory, tool registries &amp; session
@@ -428,7 +456,7 @@
         <p class="pin-desc">a link-hoarder app. Go backend + postgres on ec2, paired with a firefox extension for
           instant browser sync.</p>
         <div class="pin-foot">
-          <div class="pin-stack">go <span class="sep">·</span> postgres <span class="sep">·</span> ec2</div>
+          <div class="pin-stack">go<span class="sep">·</span>postgres<span class="sep">·</span>ec2</div>
           <div class="pin-links"><a href="https://bublet.app/">demo</a><a
               href="https://github.com/magic-bubblez/link-hoarder">repo</a></div>
         </div>
@@ -439,7 +467,7 @@
         <p class="pin-desc">a minimal interpreted programming language. recursive-descent parser, REPL, operator
           precedence, loops &amp; conditionals.</p>
         <div class="pin-foot">
-          <div class="pin-stack">python <span class="sep">·</span> parser</div>
+          <div class="pin-stack">python<span class="sep">·</span>parser</div>
           <div class="pin-links"><a href="https://github.com/magic-bubblez/BubbleLan">repo</a><a
               href="https://medium.com/@ritvika780/what-it-takes-to-build-a-programming-language-60ebe8d84078">blog</a>
           </div>
@@ -451,7 +479,7 @@
         <p class="pin-desc">a growing collection of tiny Go tools &amp; servers from scratch - cat, wc, parallel wc,
           web scraper (worker pool), TCP chat servers (echo + broadcast), race-condition demos.</p>
         <div class="pin-foot">
-          <div class="pin-stack">go <span class="sep">·</span> concurrency <span class="sep">·</span> systems</div>
+          <div class="pin-stack">go<span class="sep">·</span>concurrency<span class="sep">·</span>systems</div>
           <div class="pin-links"><a href="https://github.com/magic-bubblez/go-programs">repo</a></div>
         </div>
       </article>
@@ -461,7 +489,7 @@
         <p class="pin-desc">a minimal linux container in go. namespaces, cgroups, chroot. mostly to understand
           docker's duct tape.</p>
         <div class="pin-foot">
-          <div class="pin-stack">go <span class="sep">·</span> linux</div>
+          <div class="pin-stack">go<span class="sep">·</span>linux</div>
           <div class="pin-links"><a href="https://github.com/magic-bubblez/go-container">repo</a></div>
         </div>
       </article>
@@ -470,7 +498,7 @@
         <div class="pin-name">Is Your Code Hot?</div>
         <p class="pin-desc">"hot or not" but for github repos. rate them head-to-head, elo-style.</p>
         <div class="pin-foot">
-          <div class="pin-stack">python <span class="sep">·</span> gh api</div>
+          <div class="pin-stack">python<span class="sep">·</span>gh api</div>
           <div class="pin-links"><a href="https://isyourcodehot.onrender.com/">demo</a><a
               href="https://medium.com/@ritvika780/how-to-build-a-hot-or-not-for-github-48f22e562ab4">blog</a></div>
         </div>
@@ -490,7 +518,7 @@
         <div class="pin-name">music visualizer</div>
         <p class="pin-desc">tiny audio visualizer. matplotlib + fft. looks better than it has any right to.</p>
         <div class="pin-foot">
-          <div class="pin-stack">python <span class="sep">·</span> fft</div>
+          <div class="pin-stack">python<span class="sep">·</span>fft</div>
           <div class="pin-links"><a href="https://github.com/magic-bubblez/music_visualizer">repo</a></div>
         </div>
       </article>
@@ -508,7 +536,7 @@
         <div class="pin-name">snake</div>
         <p class="pin-desc">the classic, hand-rolled in vanilla js. runs in the browser.</p>
         <div class="pin-foot">
-          <div class="pin-stack">js <span class="sep">·</span> canvas</div>
+          <div class="pin-stack">js<span class="sep">·</span>canvas</div>
           <div class="pin-links"><a href="https://magic-bubblez.github.io/snake-game/">play</a></div>
         </div>
       </article>
@@ -517,7 +545,7 @@
         <div class="pin-name">drumkit</div>
         <p class="pin-desc">a trashy stupid drumkit. not worth mentioning but here we are.</p>
         <div class="pin-foot">
-          <div class="pin-stack">js <span class="sep">·</span> audio</div>
+          <div class="pin-stack">js<span class="sep">·</span>audio</div>
           <div class="pin-links"><a href="https://magic-bubblez.github.io/drumkit/">play</a></div>
         </div>
       </article>
