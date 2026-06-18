@@ -4,7 +4,7 @@ date: 2026-05-20
 category: technical
 description: "Built Meniscus -- a layer that holds working context outside individual AI tools so you don't re-explain everything when switching models."
 ---
-![header](images/external-context-layer-for-ai-agents/image28129.png)
+![header](images/external-context-layer-for-ai-agents/image28129.webp)
 
 ## The Problem
 
@@ -34,7 +34,7 @@ The architecture consists of three primitives:
 
 3. A **thread** is a cluster of related events - not similar in the textual sense, but connected by shared work context. "I am debugging a JWT auth bug" is a thread. It spans a GitHub commit, a ChatGPT conversation, a Notion architecture doc, a YouTube video on token expiry. Individually those events look unrelated and together they're one line of work.
 
-![architecture](images/external-context-layer-for-ai-agents/Screenshot-2026-05-20-at-07-12-45.png)
+![architecture](images/external-context-layer-for-ai-agents/Screenshot-2026-05-20-at-07-12-45.webp)
 
 ## The Pipeline
 

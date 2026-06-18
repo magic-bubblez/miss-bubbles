@@ -4,7 +4,7 @@ date: 2026-04-19
 category: technical
 description: "Designing a local-first voice agent -- STT, intent classification, orchestration, and why LLMs alone can't reliably control systems."
 ---
-![header](images/the-shape-of-a-voice-controlled-agent/Screenshot-2026-04-18-at-18-06-27.png)
+![header](images/the-shape-of-a-voice-controlled-agent/Screenshot-2026-04-18-at-18-06-27.webp)
 
 > {*on medium (just in case): [link](https://medium.com/p/7b32723a8639)*}
 

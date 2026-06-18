@@ -4,7 +4,7 @@ date: 2026-02-08
 category: essays
 description: "God as a constructive reality -- why belief isn't about truth but about sanity, hope, and navigating the unknown."
 ---
-![alt text](<images/on belief in god/Screenshot 2026-06-18 at 10.46.44.png>)
+![alt text](<images/on belief in god/Screenshot 2026-06-18 at 10.46.44.webp>)
 
 Belief in god is occasional. I only believe when I need to and need arises when there're things not within my control (or so I think). When good things happen and I don't think it happened because of my own doings, I call it luck. (in contrast when bad things happen/something goes wrong, I can see the loopholes very clearly, I can reason it was the consequence of my own choices/things I didn't do, so I blame myself and make a note of what not to do what to do, how to move forward etc.)
 

@@ -4,7 +4,7 @@ date: 2026-01-16
 category: technical
 description: "Why builds aren't deterministic, why git checkout isn't a rollback, and why you need a vault for your frozen realities."
 ---
-![header](images/why-use-an-artifact-manager/Screenshot%202026-06-18%20at%2010.47.21.png)
+![header](images/why-use-an-artifact-manager/Screenshot%202026-06-18%20at%2010.47.21.webp)
 
 for managing the artifacts of course. why? so we can choose which version of the app runs in a specific environment. why? because the most recent build is not always the correct one and we need ability to enable instant rollbacks...
 
