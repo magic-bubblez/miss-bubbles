@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I built an external context layer for AI agents - most of it already exists, here's what doesn't · ms. bubbles</title>
+  <script src="theme.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fff4e0;
+      --card: #fff0d8;
+      --border: #e8cfa8;
+      --border-soft: #f0dfc0;
+      --ink: #5a3a1e;
+      --ink-soft: #7a5432;
+      --muted: #8a704f;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(186, 91, 107);
+      --shadow: 2px 2px 0 rgba(90, 58, 30, 0.10);
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1816;
+      --card: #231f1c;
+      --border: #3d3530;
+      --border-soft: #332c27;
+      --ink: #e8e0d4;
+      --ink-soft: #c8bca8;
+      --muted: #8a8078;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(200, 110, 128);
+      --shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--rose-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 36px 30px 90px;
+    }
+
+    /* nav */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 0px solid var(--border);
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo a {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 28px;
+      color: var(--rose-dark);
+      letter-spacing: 0.005em;
+    }
+
+    .nav-logo a::after {
+      content: ' ♡';
+      color: var(--rose);
+      font-family: system-ui, sans-serif;
+      font-style: normal;
+      font-size: 15px;
+      vertical-align: 3px;
+      margin-left: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 17px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.on    { color: var(--ink); }
+
+    /* theme toggle */
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--muted);
+      transition: color 0.15s, border-color 0.15s;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-soft);
+    }
+
+    .toggle-icon::before {
+      content: '\263E';
+    }
+
+    [data-theme="dark"] .toggle-icon::before {
+      content: '\2600';
+    }
+
+    /* post */
+    .post {
+      max-width: 680px;
+    }
+
+    .post-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+
+    .post-meta .cat {
+      color: var(--rose-deep);
+    }
+
+    .post-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 48px;
+      line-height: 1.1;
+      color: var(--ink);
+      margin: 0 0 32px;
+    }
+
+    /* prose */
+    .post-body {
+      color: var(--ink-soft);
+    }
+
+    .post-body p {
+      margin: 0 0 1.3em;
+      line-height: 1.8;
+    }
+
+    .post-body h2 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 28px;
+      color: var(--ink);
+      margin: 2em 0 0.6em;
+    }
+
+    .post-body h3 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22px;
+      color: var(--ink);
+      margin: 1.6em 0 0.5em;
+    }
+
+    .post-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    .post-body pre {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--rose);
+      margin: 0 0 1.3em;
+      padding: 0 0 0 18px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body ul,
+    .post-body ol {
+      padding-left: 1.4em;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body li { margin-bottom: 0.3em; }
+
+    .post-body a {
+      color: var(--rose-dark);
+      text-decoration: underline;
+      text-decoration-color: var(--rose);
+    }
+
+    .post-body a:hover { color: var(--ink); }
+
+    .post-body img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin: 1em 0 0.3em;
+      display: block;
+    }
+
+    .post-body img + em,
+    .post-body p:has(img) + p em:only-child {
+      display: block;
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 1.3em;
+      font-style: italic;
+    }
+
+    .post-body strong { color: var(--ink); font-weight: 600; }
+    .post-body em     { color: var(--ink-soft); }
+
+    /* footer */
+    .foot {
+      margin-top: 72px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .socials img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.6;
+    }
+
+    .socials a:hover img { opacity: 1; }
+
+    [data-theme="dark"] .socials img {
+      filter: invert(1) brightness(1.2);
+    }
+
+    .copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <nav class="nav">
+      <div class="nav-logo">
+        <a href="../../index.html">ms. bubbles</a>
+      </div>
+      <div class="nav-links">
+        <a href="../../index.html">about</a>
+        <a href="../work.html">work</a>
+        <a href="../projects.html">projects</a>
+        <a href="../writing.html" class="on">writing</a>
+        <a href="../collections.html">collections</a>
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="toggle-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <article class="post">
+      <p class="post-meta">
+        <span class="date">2026-05-20</span> &middot; <span class="cat">technical</span>
+      </p>
+      <h1 class="post-title">I built an external context layer for AI agents - most of it already exists, here's what doesn't</h1>
+      <div class="post-body">
+        <p><img src="images/external-context-layer-for-ai-agents/image28129.png" alt="header"></p>
+<h2>The Problem</h2>
+<p>Imagine you&#39;re deep into a brainstorming session with an AI, going back and forth for an hour - and then the free tier rate limit hits. Now you have to switch to another AI and re-explain everything from scratch. The context, the problem, what you&#39;ve tried, where you&#39;re stuck. All of it.</p>
+<p>Because you&#39;re the only one who knows what you&#39;re working on, to query any AI assistant you have to carry all that knowledge alone, every single time.</p>
+<h2>The Solution: Meniscus</h2>
+<p>So two weeks ago, during an offline hackathon - I built a small version of my idea - <strong>Meniscus</strong> - a layer that sits outside your tools and holds that knowledge for you. One shared picture of your current working state: what you&#39;ve tried, what&#39;s blocking you, what&#39;s been decided. Any AI you switch to reads from it instead of starting from zero.</p>
+<p>The core idea:</p>
+<blockquote>
+<p>Context shouldn&#39;t live inside individual tools. It should live outside as a separate external layer and AI tools should read from it.</p>
+</blockquote>
+<p>Right now, you&#39;re the only one who knows what you&#39;re working on right now and you got to query any AI assistant you got to carry all that knowledge alone. <em>Meniscus is the layer that finally holds that knowledge for you.</em></p>
+<p>It captures user activity across tools, structures it into threads - which are the core working units representing what the user is actively doing - and lets you retrieve relevant context as a subgraph instead of raw history.</p>
+<h2>The Architecture</h2>
+<p>The architecture consists of three primitives:</p>
+<ol>
+<li><p><strong>Event</strong> is the atomic unit - an immutable, timestamped record of one thing you did. Asked ChatGPT something, watched a YouTube video, made a GitHub commit, updated a Notion page -- each one captured, normalized, stored.</p>
+</li>
+<li><p>An <strong>entity</strong> is a meaningful concept extracted from an event. Not the full text -- just the signal. &quot;JWT&quot;, &quot;middleware&quot;, &quot;refresh token&quot;, &quot;auth&quot; - the keywords that actually tell you what the event was about.</p>
+</li>
+<li><p>A <strong>thread</strong> is a cluster of related events - not similar in the textual sense, but connected by shared work context. &quot;I am debugging a JWT auth bug&quot; is a thread. It spans a GitHub commit, a ChatGPT conversation, a Notion architecture doc, a YouTube video on token expiry. Individually those events look unrelated and together they&#39;re one line of work.</p>
+</li>
+</ol>
+<p><img src="images/external-context-layer-for-ai-agents/Screenshot-2026-05-20-at-07-12-45.png" alt="architecture"></p>
+<h2>The Pipeline</h2>
+<p>The pipeline goes like this:</p>
+<p>→ activity comes in
+→ entities get extracted
+→ each new event gets compared against existing threads by entity overlap and temporal proximity
+→ assigned to the right thread or a new one gets created
+→ the whole thing is stored as a graph with explicit edges between events, entities, and threads.</p>
+<p>When an agent queries Meniscus, it doesn&#39;t get a raw dump of your history. It gets a subgraph - the relevant thread, its events, its entities. A bounded, structured slice of context instead of everything at once. The agent injects that into its prompt and answers grounded in your actual work.</p>
+<h2>The Demo</h2>
+<p>For the demo of the project, here&#39;s what I did:</p>
+<ul>
+<li>simulated events from ChatGPT, YouTube and GitHub -- 4 threads from a realistic day of work, 12 events total.</li>
+<li>the query system routes through three modes: Retrieve (traverses through the entities) --&gt; Overview (cross-thread summary of what you&#39;ve been doing) --&gt; General (conversational, if there&#39;s nothing relevant to retrieve, it says &quot;i don&#39;t know&quot;).</li>
+</ul>
+<h2>Reality Check</h2>
+<p>Whenever starting with a project, I like to think on the lines of SHOULDs -- how something should be done and question my own decisions aggressively at every step before I can come to an architecture that I deem to be good enough.</p>
+<p>Whatever was showed in the demo, it was only a small part of the whole implementation I had planned. When the hackathon ended, after 2 days I decided to sit with my project once again and finish the remaining implementation. However I found some major loopholes and realized whatever I am doing is nothing different from what already exists - Zep, Mem0, Supermemory, Rewind etc.</p>
+<p><em>most of what I built is already there, and in better shape than I could ship.</em></p>
+<p>External memory layers, graph storage, episodic retrieval, agent APIs - these are solved or being actively solved by well-funded teams. Hence no point in redoing the same.</p>
+<blockquote>
+<p>However there&#39;s one specific architectural component that is the only differentiating factor and it got a persisting question surrounding it, which I need to research upon thoroughly before coming to a conclusion.</p>
+</blockquote>
+<h2>The Differentiator</h2>
+<p>Every existing system retrieves by similarity - cosine distance, semantic search, ranked chunks. You ask a question, it finds the most textually similar pieces of your history and hands them back.</p>
+<p>But &quot;what am I currently working on&quot; isn&#39;t a similarity problem. It&#39;s a working state problem. The agent doesn&#39;t need the most similar chunks. it needs the current state of an ongoing task - what the goal is, what&#39;s been tried, what&#39;s blocking progress, what&#39;s been decided. Those are different questions and similarity search doesn&#39;t answer them cleanly.</p>
+<h2>Why Not Just Use Long Context?</h2>
+<p>Then the obvious question is - what about just dumping everything into a long context window? frontier models like Gemini and Claude have massive context windows. Why not hand them your entire history and let them figure out the working state themselves?</p>
+<p>And honestly, they&#39;d do a decent job. give Claude enough of your activity and it can synthesize &quot;what you&#39;re working on&quot; reasonably well. but three problems:</p>
+<ul>
+<li><p><strong>1st, cost.</strong> Sending hundreds of thousands of tokens on every single query isn&#39;t free at scale.</p>
+</li>
+<li><p><strong>2nd, the lost-in-the-middle problem</strong> - empirically documented, models perform worse on information buried deep in long contexts. <em>More tokens doesn&#39;t mean better reasoning over those tokens.</em></p>
+</li>
+<li><p><strong>3rd, even if the model synthesizes working state correctly from raw history, it&#39;s doing that work fresh every single time you query it.</strong> <em>Meniscus does it once</em> and maintains it continuously. The synthesis is already done when the agent needs it.</p>
+</li>
+</ul>
+<h2>Next Steps: The Benchmark</h2>
+<p>Here are two hypotheses -</p>
+<ol>
+<li><p>Thread-state packet retrieval produces better agent answers to active working state queries than hybrid search.</p>
+</li>
+<li><p>Thread-state packet retrieval injects fewer tokens for the same query - because a structured state object is already present there for agent to retrieve.</p>
+</li>
+</ol>
+<p>I might have guessed the answers but need to be very sure and the honest thing to do is build a benchmark, compare thread-state packet retrieval against state of the art retrieval methods on active working state queries, measure token count and answer quality, and write about what I find.</p>
+
+      </div>
+    </article>
+
+    <footer class="foot">
+      <div class="socials">
+        <a href="mailto:ritvika780@gmail.com"><img src="../../images/email.png" alt="email" /></a>
+        <a href="https://github.com/magic-bubblez"><img src="../../images/github.png" alt="github" /></a>
+        <a href="https://www.linkedin.com/in/miss-bubbles/"><img src="../../images/linkedin.png" alt="linkedin" /></a>
+      </div>
+      <div class="copy">&copy; ms. bubbles</div>
+    </footer>
+
+  </div>
+</body>
+
+</html>

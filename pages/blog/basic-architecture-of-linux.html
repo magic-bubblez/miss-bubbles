@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A brief introduction to Basic architecture of Linux · ms. bubbles</title>
+  <script src="theme.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fff4e0;
+      --card: #fff0d8;
+      --border: #e8cfa8;
+      --border-soft: #f0dfc0;
+      --ink: #5a3a1e;
+      --ink-soft: #7a5432;
+      --muted: #8a704f;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(186, 91, 107);
+      --shadow: 2px 2px 0 rgba(90, 58, 30, 0.10);
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1816;
+      --card: #231f1c;
+      --border: #3d3530;
+      --border-soft: #332c27;
+      --ink: #e8e0d4;
+      --ink-soft: #c8bca8;
+      --muted: #8a8078;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(200, 110, 128);
+      --shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--rose-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 36px 30px 90px;
+    }
+
+    /* nav */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 0px solid var(--border);
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo a {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 28px;
+      color: var(--rose-dark);
+      letter-spacing: 0.005em;
+    }
+
+    .nav-logo a::after {
+      content: ' ♡';
+      color: var(--rose);
+      font-family: system-ui, sans-serif;
+      font-style: normal;
+      font-size: 15px;
+      vertical-align: 3px;
+      margin-left: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 17px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.on    { color: var(--ink); }
+
+    /* theme toggle */
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--muted);
+      transition: color 0.15s, border-color 0.15s;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-soft);
+    }
+
+    .toggle-icon::before {
+      content: '\263E';
+    }
+
+    [data-theme="dark"] .toggle-icon::before {
+      content: '\2600';
+    }
+
+    /* post */
+    .post {
+      max-width: 680px;
+    }
+
+    .post-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+
+    .post-meta .cat {
+      color: var(--rose-deep);
+    }
+
+    .post-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 48px;
+      line-height: 1.1;
+      color: var(--ink);
+      margin: 0 0 32px;
+    }
+
+    /* prose */
+    .post-body {
+      color: var(--ink-soft);
+    }
+
+    .post-body p {
+      margin: 0 0 1.3em;
+      line-height: 1.8;
+    }
+
+    .post-body h2 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 28px;
+      color: var(--ink);
+      margin: 2em 0 0.6em;
+    }
+
+    .post-body h3 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22px;
+      color: var(--ink);
+      margin: 1.6em 0 0.5em;
+    }
+
+    .post-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    .post-body pre {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--rose);
+      margin: 0 0 1.3em;
+      padding: 0 0 0 18px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body ul,
+    .post-body ol {
+      padding-left: 1.4em;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body li { margin-bottom: 0.3em; }
+
+    .post-body a {
+      color: var(--rose-dark);
+      text-decoration: underline;
+      text-decoration-color: var(--rose);
+    }
+
+    .post-body a:hover { color: var(--ink); }
+
+    .post-body img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin: 1em 0 0.3em;
+      display: block;
+    }
+
+    .post-body img + em,
+    .post-body p:has(img) + p em:only-child {
+      display: block;
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 1.3em;
+      font-style: italic;
+    }
+
+    .post-body strong { color: var(--ink); font-weight: 600; }
+    .post-body em     { color: var(--ink-soft); }
+
+    /* footer */
+    .foot {
+      margin-top: 72px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .socials img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.6;
+    }
+
+    .socials a:hover img { opacity: 1; }
+
+    [data-theme="dark"] .socials img {
+      filter: invert(1) brightness(1.2);
+    }
+
+    .copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <nav class="nav">
+      <div class="nav-logo">
+        <a href="../../index.html">ms. bubbles</a>
+      </div>
+      <div class="nav-links">
+        <a href="../../index.html">about</a>
+        <a href="../work.html">work</a>
+        <a href="../projects.html">projects</a>
+        <a href="../writing.html" class="on">writing</a>
+        <a href="../collections.html">collections</a>
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="toggle-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <article class="post">
+      <p class="post-meta">
+        <span class="date">2024-12-16</span> &middot; <span class="cat">technical</span>
+      </p>
+      <h1 class="post-title">A brief introduction to Basic architecture of Linux</h1>
+      <div class="post-body">
+        <p>First things first -- Linux is not an operating system. Linux is a kernel which is a core part of the operating systems, managing hardware, software and processes. The term Linux is often used interchangeably with its many distributions like Ubuntu, Fedora, Debian, Manjaro, Arch Linux. However they are complete operating systems built on top of Linux kernel.</p>
+<h2>What is a Kernel?</h2>
+<p>The kernel is the <strong>central component</strong> of an operating system that manages communication between hardware and software. It is responsible for:</p>
+<ul>
+<li><strong>Memory management</strong>: Allocating and managing RAM.</li>
+<li><strong>Process management</strong>: Handling processes and multitasking.</li>
+<li><strong>Hardware interaction</strong>: Communicating with hardware via device drivers.</li>
+<li><strong>Security</strong>: Managing user permissions, access control, and system integrity.</li>
+</ul>
+<p>Kernel provides an interface between user-level applications and hardware, abstracting the complexities of hardware interactions.</p>
+<h2>What happens when you power on your PC?</h2>
+<p><strong>Power-on process</strong>: When you start your computer, the <strong>BIOS</strong> runs first, which looks for a bootable device (usually the hard drive or SSD).</p>
+<p>The <strong>Bootloader</strong> (e.g., GRUB in many distros) loads the kernel into memory (RAM). The kernel is the first program executed by the computer.</p>
+<p>Once the <strong>kernel</strong> is loaded, it initializes hardware and mounts the file system. After that, the kernel hands control to the <strong>init system</strong>, which starts up user processes and applications.</p>
+<p><strong>RAM</strong>: During the boot process, the kernel is loaded into <strong>RAM</strong> so that it can directly interact with the hardware and manage the system. This is important because RAM is faster than storage devices, ensuring smooth system operation.</p>
+<h2>What is a distribution?</h2>
+<p>A Linux distro is an OS built around the Linux kernel and includes software like user interfaces, utilities, and package management tools. The kernel remains the same across all these distributions. The main difference lies in the packages and software provided by each distribution.</p>
+<h2>What are package managers?</h2>
+<p>Linux doesn&#39;t come with an app store like macOS or Windows. A package manager is a tool that allows you to easily install, update, and remove software on your system. When you use a package manager to install software, it fetches the software from a repository, installs dependencies, and configures the application.</p>
+<p>Different distributions use different package manager formats:</p>
+<ul>
+<li><strong>Debian-based</strong> (e.g., Ubuntu) use <strong>.deb</strong> packages and the <code>apt</code> package manager.</li>
+<li><strong>Red Hat-based</strong> (e.g., Fedora) use <strong>.rpm</strong> packages and the <code>dnf</code> or <code>yum</code> package managers.</li>
+</ul>
+<h2>User Space vs. Kernel Space</h2>
+<p>Linux can operate in two spaces:</p>
+<ul>
+<li><strong>Kernel Space</strong>: This is where the kernel runs and has full access to the hardware. Any code that runs in kernel space can directly interact with the hardware.</li>
+<li><strong>User Space</strong>: This is where normal user applications run. These programs do not have direct access to hardware and interact with the kernel through system calls.</li>
+</ul>
+<p>This ensures that user programs cannot interfere with the core functions of the OS, providing a level of security and stability.</p>
+<h2>Desktop Environments</h2>
+<p>A desktop environment is the GUI that allows you to interact with your Linux system using windows, icons, and menus. Different Linux distros can come with various DEs:</p>
+<ul>
+<li><strong>GNOME</strong>: One of the most popular DEs, especially for distributions like Ubuntu. Known for its simplicity, doesn&#39;t offer much customization.</li>
+<li><strong>KDE Plasma</strong>: A more customizable DE, known for being feature-rich. Offers a look and feel similar to Windows, with lots of settings to tweak.</li>
+</ul>
+<h2>Permissions</h2>
+<p>Linux is built with strong user and file permissions. Each file and directory has a set of permissions that dictate which users or groups can read, write, or execute them. You can view and modify permissions using <code>ls -l</code> (to list permissions) and <code>chmod</code> (to change them).</p>
+<p>If you understand the basic architecture of Linux, it can open up lots of possibilities. Keep experimenting, learning, and don&#39;t hesitate to dive deeper into the rich world of Linux!</p>
+
+      </div>
+    </article>
+
+    <footer class="foot">
+      <div class="socials">
+        <a href="mailto:ritvika780@gmail.com"><img src="../../images/email.png" alt="email" /></a>
+        <a href="https://github.com/magic-bubblez"><img src="../../images/github.png" alt="github" /></a>
+      </div>
+      <div class="copy">&copy; ms. bubbles</div>
+    </footer>
+
+  </div>
+</body>
+
+</html>

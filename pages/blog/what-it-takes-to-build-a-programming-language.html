@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What it takes to build a Programming Language? · ms. bubbles</title>
+  <script src="theme.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fff4e0;
+      --card: #fff0d8;
+      --border: #e8cfa8;
+      --border-soft: #f0dfc0;
+      --ink: #5a3a1e;
+      --ink-soft: #7a5432;
+      --muted: #8a704f;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(186, 91, 107);
+      --shadow: 2px 2px 0 rgba(90, 58, 30, 0.10);
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1816;
+      --card: #231f1c;
+      --border: #3d3530;
+      --border-soft: #332c27;
+      --ink: #e8e0d4;
+      --ink-soft: #c8bca8;
+      --muted: #8a8078;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(200, 110, 128);
+      --shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--rose-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 36px 30px 90px;
+    }
+
+    /* nav */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 0px solid var(--border);
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo a {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 28px;
+      color: var(--rose-dark);
+      letter-spacing: 0.005em;
+    }
+
+    .nav-logo a::after {
+      content: ' ♡';
+      color: var(--rose);
+      font-family: system-ui, sans-serif;
+      font-style: normal;
+      font-size: 15px;
+      vertical-align: 3px;
+      margin-left: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 17px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.on    { color: var(--ink); }
+
+    /* theme toggle */
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--muted);
+      transition: color 0.15s, border-color 0.15s;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-soft);
+    }
+
+    .toggle-icon::before {
+      content: '\263E';
+    }
+
+    [data-theme="dark"] .toggle-icon::before {
+      content: '\2600';
+    }
+
+    /* post */
+    .post {
+      max-width: 680px;
+    }
+
+    .post-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+
+    .post-meta .cat {
+      color: var(--rose-deep);
+    }
+
+    .post-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 48px;
+      line-height: 1.1;
+      color: var(--ink);
+      margin: 0 0 32px;
+    }
+
+    /* prose */
+    .post-body {
+      color: var(--ink-soft);
+    }
+
+    .post-body p {
+      margin: 0 0 1.3em;
+      line-height: 1.8;
+    }
+
+    .post-body h2 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 28px;
+      color: var(--ink);
+      margin: 2em 0 0.6em;
+    }
+
+    .post-body h3 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22px;
+      color: var(--ink);
+      margin: 1.6em 0 0.5em;
+    }
+
+    .post-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    .post-body pre {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--rose);
+      margin: 0 0 1.3em;
+      padding: 0 0 0 18px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body ul,
+    .post-body ol {
+      padding-left: 1.4em;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body li { margin-bottom: 0.3em; }
+
+    .post-body a {
+      color: var(--rose-dark);
+      text-decoration: underline;
+      text-decoration-color: var(--rose);
+    }
+
+    .post-body a:hover { color: var(--ink); }
+
+    .post-body img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin: 1em 0 0.3em;
+      display: block;
+    }
+
+    .post-body img + em,
+    .post-body p:has(img) + p em:only-child {
+      display: block;
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 1.3em;
+      font-style: italic;
+    }
+
+    .post-body strong { color: var(--ink); font-weight: 600; }
+    .post-body em     { color: var(--ink-soft); }
+
+    /* footer */
+    .foot {
+      margin-top: 72px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .socials img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.6;
+    }
+
+    .socials a:hover img { opacity: 1; }
+
+    [data-theme="dark"] .socials img {
+      filter: invert(1) brightness(1.2);
+    }
+
+    .copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <nav class="nav">
+      <div class="nav-logo">
+        <a href="../../index.html">ms. bubbles</a>
+      </div>
+      <div class="nav-links">
+        <a href="../../index.html">about</a>
+        <a href="../work.html">work</a>
+        <a href="../projects.html">projects</a>
+        <a href="../writing.html" class="on">writing</a>
+        <a href="../collections.html">collections</a>
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="toggle-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <article class="post">
+      <p class="post-meta">
+        <span class="date">2025-10-22</span> &middot; <span class="cat">technical</span>
+      </p>
+      <h1 class="post-title">What it takes to build a Programming Language?</h1>
+      <div class="post-body">
+        <p><img src="images/what-it-takes-to-build-a-programming-language/1*uRxIrEQOu5R8nQJiM6AVtg.png" alt="header"></p>
+<blockquote>
+<p>&quot;The best way to understand something is to create it from scratch&quot; -- someone wise probably.</p>
+</blockquote>
+<p>Theory of Automata is genuinely one of the most interesting subjects in computer science and I realized it ten days ago when I was preparing for my TOA exam (a night before, of course!)</p>
+<p>State machines, formal languages, grammar, computational theory -- everything seemed so fascinating at the moment and I thought &quot;Why didn&#39;t I dive into this earlier?&quot;</p>
+<p>The idea of building an interpreter was too tempting at the moment but we needed to wait for some time :3</p>
+<h2>Why everyone should learn this?</h2>
+<p>Today, everybody grinds Leetcode to pass interviews. And that&#39;s fair -- its all a part of the game. But this has led to a mistaken assumption that you <em>only</em> need to do DSA to get a job, and that there&#39;s no real-world application beyond cracking coding rounds. Nothing could be further from the truth.</p>
+<p>When you learn about building interpreters, you learn:</p>
+<ul>
+<li>how <strong>trees</strong> represent real structure of code, how <strong>stacks</strong> manage execution and recursion the way languages do under the hood, how <strong>hashmaps, dictionaries</strong> store variables and scopes, how conditionals and control flow works beneath the surface and how <strong>AST</strong>s gives a clear representation of the program.</li>
+</ul>
+<p>Its one of the best exercises to become a better programmer; to understand systems, go beyond syntax and learn what goes under the hood when your code runs.</p>
+<blockquote>
+<p>&quot;To respect something is to understand that there is something there to see, that it is not all surface, that something lies beneath the surface.&quot; -- Ivan Pavlov</p>
+</blockquote>
+<p>Anyway, all in all, it gives you that satisfying feeling of having built something that actually works</p>
+<p>A week after exams, I started digging into what it actually takes to build a programming language; looked up all sort of stuff -- what it takes to build a pl, what are the steps needed, concepts I got to know and things it will help me learn.</p>
+<p>There&#39;s a blog series by Ruslan Spivak -- <a href="https://ruslanspivak.com/lsbasi-part1/">&quot;Let&#39;s Build a Simple Interpreter&quot;</a> -- where he teaches you how to build a Pascal-like pl from scratch. Followed some parts of it and after getting a hang of how things work, I began to define the grammatical rules for my own. Two and a half days later, I had <a href="https://github.com/magic-bubblez/BubbleLan"><strong>BubbleLan</strong></a> -- a tiny programming language in Python with its own syntax, REPL and file execution system.</p>
+<p>Here, I will try to walk you through the journey of how you can build your own and will try to explain some necessary concepts that you need to know before moving forward.</p>
+<p><img src="images/what-it-takes-to-build-a-programming-language/Screenshot%202026-06-16%20at%2009.42.33.png" alt="long journey ahead"></p>
+<h2>It all starts here: Interpreters vs Compilers</h2>
+<p>To put it simply, both are tools for converting code from one form to other. The difference is how and when the code is executed.</p>
+<ul>
+<li><strong>Compilers</strong>: it reads the whole program in one go, translates into another form (machine code, bytecode) and produces an output (executable file) that can be run later.</li>
+<li><strong>Interpreters</strong>: it reads and executes the program directly line by line or by structure without creating a separate output.</li>
+</ul>
+<p>The cool part is many modern languages blur these lines. Instead of a compile-only or interpret-only language, many compile source code into intermediate <em>bytecode</em> which is then executed by the interpreter. For example, Python actually compiles to bytecode (.pyc files), then interprets those files to produce output. Java compiles to bytecode, and then it runs on the JVM.</p>
+<p>For BubbleLan, we went with the interpreter path because I wanted to keep it simple for the start.</p>
+<h2>The Four Stages</h2>
+<p>Let&#39;s take an example for printing statements in BubbleLan.</p>
+<p>Instead of using python&#39;s print() statement, there&#39;s a <strong>&quot;say&quot;</strong> command. so when you write <code>say &quot;Hello&quot;</code> and hit enter, it goes through 4 distinct stages -- each making the code into something more structured.</p>
+<h2>Stage 1: Lexical Analysis (The Lexer)</h2>
+<blockquote>
+<p>after completing each stage, you are advised to go through the whole code of that particular file for better understanding and reinforcing the logic. The link to repo will be provided at the end.</p>
+</blockquote>
+<p>So the job of a lexer is to read a given input string character by character and group those characters into individual units called <strong>tokens</strong>.</p>
+<p>There are two parts in a token: a value &amp; a type. For ex. when you write &quot;3&quot; -- type is INTEGER and value is &quot;3&quot;.</p>
+<pre><code class="language-python">class Token:
+    def __init__(self, type, value):
+        self.type = type
+        self.value = value
+    def __repr__(self):
+        return f&#39;Token({self.type}, {self.value})&#39;
+</code></pre>
+<blockquote>
+<p>the <code>__repr__</code> method at the end is used for string representation of objects in python. So when you print a token, instead of seeing <code>&lt;Token object at 0x...&gt;</code>, you see something readable like <code>Token(INTEGER, 5)</code></p>
+</blockquote>
+<pre><code class="language-python">INTEGER, IDENT, ASSIGN, PLUS, MULTIPLY, DIVIDE, MINUS, SAY, EOF, GRT, LST, STRING, IF, THEN, ELSE, EQ, NEQ, FOR, IN, FROM, TO, COLON, LBRACKET, RBRACKET, COMMA = &#39;INTEGER&#39;, &#39;IDENT&#39;, &#39;ASSIGN&#39;, &#39;PLUS&#39;, &#39;MULTIPLY&#39;, &#39;DIVIDE&#39;, &#39;MINUS&#39;, &#39;SAY&#39;, &#39;EOF&#39;, &#39;GRT&#39;, &#39;LST&#39;, &#39;STRING&#39;, &#39;IF&#39;, &#39;THEN&#39;, &#39;ELSE&#39;, &#39;EQ&#39;, &#39;NEQ&#39;, &#39;FOR&#39;, &#39;IN&#39;, &#39;FROM&#39;, &#39;TO&#39;, &#39;COLON&#39;, &#39;LBRACKET&#39;, &#39;RBRACKET&#39;, &#39;COMMA&#39;
+</code></pre>
+<ul>
+<li>This is me defining constants. Each name equals itself as a string. So <code>INTEGER = &#39;INTEGER&#39;</code>, <code>PLUS = &#39;PLUS&#39;</code>, etc. why? so that when I check token types later, I can write <code>if token.type == INTEGER</code> instead of <code>if token.type == &quot;INTEGER&quot;</code> -- no quotes, less error-prone.</li>
+</ul>
+<p>I assume the token names are self-explanatory (IDENT = identifiers, GRT = Greater than, LST = Less than, EQ = &#39;==&#39;, NEQ = &#39;!=&#39;, LBRACKET = &#39;[&#39;, RBRACKET = &#39;]&#39;)</p>
+<p>Next step, we move onto defining our main tokenizer class -- the heart of our program.</p>
+<pre><code class="language-python">class Tokenizer:
+    def __init__(self, txt):
+        self.txt = txt
+        self.pos = 0
+        self.curr_char = txt[self.pos] if txt else None
+</code></pre>
+<p>Our Tokenizer (or lexer) takes in the source code as input string and initializes three things:</p>
+<p><code>self.txt</code> -- stores the entire source code || <code>self.pos</code> -- acts as index or position counter for the text || <code>self.curr_char</code> -- the character we&#39;re currently looking at</p>
+<p>That <code>if txt else None</code> check is for handling the edge case of empty input. If someone passes an empty string, <code>txt[0]</code> would crash, so we set <code>curr_char</code> to <code>None</code> instead.</p>
+<p>Now for traversing through the string input (our source code), we need to increment the pointer value everytime. Here&#39;s our pointer method -- for moving forward:</p>
+<pre><code class="language-python">def pointer(self):
+    self.pos += 1
+    self.curr_char = self.txt[self.pos] if self.pos &lt; len(self.txt) else None
+</code></pre>
+<p>everytime its called, value of <code>self.pos</code> will increase by 1 and <code>self.curr_char</code> would be set to the character at position <code>self.pos</code>. Whenever we consume a character, we call <code>pointer()</code> function.</p>
+<p>Next method is: <code>skip_whitespace()</code> for skipping spaces, tabs, newlines which usually don&#39;t matter in programming languages. So whenever we encounter a whitespace, <code>skip_whitespace()</code> function calls <code>self.pointer()</code> which moves <code>self.pos</code> by 1.</p>
+<p>Now we move onto reading numbers (digit by digit) and strings (everything b/w the quotes):</p>
+<pre><code class="language-python">def number(self):
+    result = &#39;&#39;
+    while self.curr_char and self.curr_char.isdigit():
+        result += self.curr_char
+        self.pointer()
+    return int(result)
+
+def string(self):
+    result = &#39;&#39;
+    self.pointer()
+    while self.curr_char and self.curr_char != &#39;&quot;&#39;:
+        result += self.curr_char
+        self.pointer()
+    if self.curr_char == &#39;&quot;&#39;:
+        self.pointer()
+    return result
+</code></pre>
+<p>As pointer moves character by character through the whole input, whenever we encounter a digit, we call <code>number()</code> function. What it does is to keep appending characters to our result variable as long as they are digits. (and as mentioned <code>self.pointer()</code> will be called every time for moving the pointer forward). Once a non-digit character is found, we break the loop and return the final result variable, which will act as a one separate token in itself.</p>
+<p>Next, for reading the strings, we have <code>string()</code> function. When we see a <code>&quot;</code>, we know a string is starting. This method reads everything until the closing <code>&quot;</code>. Works similar to the above <code>number()</code> function. (try to dry run it yourself)</p>
+<p>Next comes a function for reading identifiers and keywords:</p>
+<pre><code class="language-python">def identifier(self):
+    result = &#39;&#39;
+    while self.curr_char and self.curr_char.isalnum():
+        result += self.curr_char
+        self.pointer()
+    if result == &#39;say&#39;:
+        return Token(SAY, result)
+    if result == &#39;if&#39;:
+        return Token(IF, result)
+    if result == &#39;then&#39;:
+        return Token(THEN, result)
+    if result == &#39;else&#39;:
+        return Token(ELSE, result)
+    if result == &#39;for&#39;:
+        return Token(FOR, result)
+    if result == &#39;in&#39;:
+        return Token(IN, result)
+    if result == &#39;from&#39;:
+        return Token(FROM, result)
+    if result == &#39;to&#39;:
+        return Token(TO, result)
+    return Token(IDENT, result)
+</code></pre>
+<p>This handles both variable names and keywords. The method reads a sequence of letters and numbers. (<code>isalnum()</code> function to check for alphanumeric characters) So if the result variable contains a keyword, the conditions within the if statements are executed. Else, it means that result contains a variable hence we return <code>Token(IDENT, result)</code></p>
+<p>Now comes our main function for this file, <code>get_next_token()</code>:</p>
+<pre><code class="language-python">def get_next_token(self):
+    while self.curr_char:
+        if self.curr_char.isspace():
+            self.skip_whitespace()
+            continue
+        if self.curr_char.isdigit():
+            return Token(INTEGER, self.number())
+        if self.curr_char.isalpha():
+            return self.identifier()
+        if self.curr_char == &#39;=&#39;:
+            self.pointer()
+            if self.curr_char == &#39;=&#39;:
+                self.pointer()
+                return Token(EQ, &#39;==&#39;)
+            return Token(ASSIGN, &#39;=&#39;)
+        if self.curr_char == &#39;!&#39;:
+            self.pointer()
+            if self.curr_char == &#39;=&#39;:
+                self.pointer()
+                return Token(NEQ, &#39;!=&#39;)
+            raise Exception(f&#39;Unknown character: !&#39;)
+        if self.curr_char == &#39;&lt;&#39;:
+            self.pointer()
+            return Token(LST, &#39;&lt;&#39;)
+        if self.curr_char == &#39;&gt;&#39;:
+            self.pointer()
+            return Token(GRT, &#39;&gt;&#39;)
+        if self.curr_char == &#39;+&#39;:
+            self.pointer()
+            return Token(PLUS, &#39;+&#39;)
+        if self.curr_char == &#39;-&#39;:
+            self.pointer()
+            return Token(MINUS, &#39;-&#39;)
+        if self.curr_char == &#39;*&#39;:
+            self.pointer()
+            return Token(MULTIPLY, &#39;*&#39;)
+        if self.curr_char == &#39;/&#39;:
+            self.pointer()
+            return Token(DIVIDE, &#39;/&#39;)
+        if self.curr_char == &#39;&quot;&#39;:
+            return Token(STRING, self.string())
+        if self.curr_char == &#39;:&#39;:
+            self.pointer()
+            return Token(COLON, &#39;:&#39;)
+        if self.curr_char == &#39;[&#39;:
+            self.pointer()
+            return Token(LBRACKET, &#39;[&#39;)
+        if self.curr_char == &#39;]&#39;:
+            self.pointer()
+            return Token(RBRACKET, &#39;]&#39;)
+        if self.curr_char == &#39;,&#39;:
+            self.pointer()
+            return Token(COMMA, &#39;,&#39;)
+        raise Exception(f&#39;Unknown character: {self.curr_char}&#39;)
+    return Token(EOF, None)
+</code></pre>
+<p>such a long ass method!! Looks quite daunting but its not that complicated -- just a bunch of if statements combined together to check the conditions.</p>
+<pre><code>Input: say &quot;Hello&quot;
+
+Tokenizer breaks it down:
+Token(SAY, &#39;say&#39;)
+Token(STRING, &#39;Hello&#39;)
+Token(EOF, None)
+</code></pre>
+<p>and that&#39;s it! That&#39;s all what the parser needs to work with. We have successfully made our Lexer transform the string of characters into tokens.</p>
+<p>Take a little break, have some snacks and go through this file here for the complete code of lexer: <a href="https://github.com/magic-bubblez/BubbleLan/blob/main/lexer.py">lexer.py</a></p>
+<p>you are a cutie btw</p>
+<p>Alright! Let&#39;s move onto Stage 2 :D</p>
+<h2>Stage 2: Syntax Analysis (The Parser)</h2>
+<p>The process of recognizing a phrase or structure in stream of tokens is called parsing. The role of a parser is to check whether the tokens fit the defined grammatical rules of a language or not.</p>
+<p>Before we move forward with the implementation, we need to define grammar for our language.</p>
+<p>But what exactly is a grammar? A formal system of production rules used to generate a language. It defines a language by explaining what sentences it can form.</p>
+<p>And what is a language? A set of strings conforming to those production rules -- which are rules that define grammar of a language.</p>
+<p>I highly recommend to please go and have a good read on production rules before moving forward. won&#39;t be possible to explain on here soooo +_+</p>
+<p>Parsers use these production rules during syntax analysis in different ways depending on their type. We will use Recursive descent parser -- a top-down parsing technique where a set of mutually recursive procedures is used to analyze an input string according to a grammar.</p>
+<p>Before moving onto building parsers, we need to create a structure for our program. Abstract Syntax Trees or ASTs -- these create a structural representation of our program. The tree is called &quot;Abstract&quot; because it abstracts away unnecessary details (like parentheses or semicolons) and focuses on the logical structure of the code.</p>
+<p>Let&#39;s have a look at how everything comes together:</p>
+<p>Source code --&gt; Lexer breaks the text into tokens --&gt; Parser takes those tokens and organize them into a tree structure (AST) --&gt; Interpreters walk through the AST and evaluate the nodes --&gt; output is printed to the console.</p>
+<p>These are the node types that form our syntax tree:</p>
+<pre><code class="language-python"># my_ast.py
+class Num:
+    def __init__(self, value): self.value = value
+
+class BinOp:
+    def __init__(self, left, op, right):
+        self.left = left
+        self.op = op
+        self.right = right
+
+class String:
+    def __init__(self, value): self.value = value
+
+class Var:
+    def __init__(self, name): self.name = name
+
+class Assign:
+    def __init__(self, name, value):
+        self.name, self.value = name, value
+
+class Say:
+    def __init__(self, expr): self.expr = expr
+
+class If:
+    def __init__(self, condition, then_branch, else_branch):
+        self.condition, self.then_branch, self.else_branch = condition, then_branch, else_branch
+
+class Array:
+    def __init__(self, elements): self.elements = elements
+
+class For:
+    def __init__(self, var, iterable, body):
+        self.var = var
+        self.iterable = iterable
+        self.body = body
+
+class Range:
+    def __init__(self, start, end):
+        self.start = start
+        self.end = end
+
+class Index:
+    def __init__(self, array, index):
+        self.array = array
+        self.index = index
+</code></pre>
+<p>I guess, most nodes are self-explanatory so won&#39;t spend too much time here. Though, y&#39;all are asked to take a good look at the structure of the tree before moving to the parsers :p</p>
+<p>Let&#39;s take a look at new_parser.py where our tokens become a tree:</p>
+<p>The parser takes a lexer instance and immediately grabs the first token. <code>self.curr_token</code> is our look ahead -- the token we&#39;re currently examining.</p>
+<pre><code class="language-python">class Parser:
+    def __init__(self, lexer):
+        self.lexer = lexer
+        self.curr_token = self.lexer.get_next_token()
+
+    def eat(self, token_type):
+        if self.curr_token.type == token_type:
+            self.curr_token = self.lexer.get_next_token()
+        else:
+            raise Exception(f&#39;Expected {token_type}, got {self.curr_token.type}&#39;)
+</code></pre>
+<p>This is the parser&#39;s most basic operation. It says &quot;I expect to see token type X here. If I do, consume it and move to the next token. If not, throw an error.&quot;</p>
+<p>Example: When parsing an assignment, we do:</p>
+<pre><code>self.eat(IDENT)   # Must see a variable name
+self.eat(ASSIGN)  # Must see &#39;=&#39;
+</code></pre>
+<p>Here&#39;s where it gets interesting. Math has precedence rules: BODMAS. The parser needs to respect that. The trick is to use layers -- three methods that call each other in a hierarchy:</p>
+<pre><code class="language-python">def factor(self):
+    token = self.curr_token
+    if token.type == INTEGER:
+        self.eat(INTEGER)
+        return Num(token.value)
+    elif token.type == STRING:
+        self.eat(STRING)
+        return String(token.value)
+    elif token.type == LBRACKET:
+        return self.list_literal()
+    elif token.type == IDENT:
+        name = token.value
+        self.eat(IDENT)
+        if self.curr_token.type == LBRACKET:
+            self.eat(LBRACKET)
+            index = self.expr()
+            self.eat(RBRACKET)
+            return Index(Var(name), index)
+        return Var(name)
+
+def term(self):
+    node = self.factor()
+    while self.curr_token.type in (MULTIPLY, DIVIDE):
+        op = self.curr_token.value
+        if self.curr_token.type == MULTIPLY:
+            self.eat(MULTIPLY)
+        elif self.curr_token.type == DIVIDE:
+            self.eat(DIVIDE)
+        node = BinOp(node, op, self.factor())
+    return node
+
+def expr(self):
+    node = self.term()
+    while self.curr_token.type in (PLUS, MINUS):
+        op = self.curr_token.value
+        if self.curr_token.type == PLUS:
+            self.eat(PLUS)
+        elif self.curr_token.type == MINUS:
+            self.eat(MINUS)
+        node = BinOp(node, op, self.term())
+    return node
+</code></pre>
+<pre><code>When parsing: 2 + 3 * 4
+
+expr() --&gt; term() --&gt; factor() returns Num(2)
+sees +, creates BinOp
+term() --&gt; factor() returns Num(3)
+  sees *, creates BinOp(Num(3), *, Num(4))
+final BinOp: 2 + (3 * 4)
+</code></pre>
+<p>The result: <code>2 + (3 * 4)</code> -- exactly what we want!</p>
+<p>The layering of functions enforces precedence. This pattern is called <strong>recursive descent parsing</strong> and it&#39;s beautiful because the structure of code is imitating the structure of our grammar.</p>
+<p>Also notice, in <code>factor()</code> method how we are handling array indexing. For example its a command like -- <code>say nums[0]</code></p>
+<p>The key insight is that after we consume the identifier token, we peek at what comes next. If it&#39;s <code>[</code>, we know more is coming; that its not a simple variable but it&#39;s an array access. If it&#39;s anything else (EOF or whatever), then it&#39;s just a variable reference.</p>
+<p>This is called <strong>lookahead parsing</strong> -- looking at the next token to decide what to do. The <code>curr_token</code> is our lookahead -- it&#39;s always one token ahead of what we&#39;ve actually consumed.</p>
+<pre><code class="language-python">def list_literal(self):
+    self.eat(LBRACKET)
+    elements = []
+    if self.curr_token.type != RBRACKET:
+        elements.append(self.expr())
+        while self.curr_token.type == COMMA:
+            self.eat(COMMA)
+            elements.append(self.expr())
+    self.eat(RBRACKET)
+    return Array(elements)
+
+def comparison(self):
+    node = self.expr()
+    if self.curr_token.type in (EQ, NEQ, LST, GRT):
+        op = self.curr_token.value
+        token_type = self.curr_token.type
+        self.eat(token_type)
+        node = BinOp(node, op, self.expr())
+    return node
+</code></pre>
+<p><code>list_literal()</code> parses <code>[1, 2, 3]</code> or <code>[x, y + 2, &quot;hello&quot;]</code>. Start with an opening bracket <code>[</code> --&gt; parse expressions separated by commas till we don&#39;t encounter a closing bracket --&gt; end with a closing bracket <code>]</code>. Each element of a list can be any expression - that&#39;s why we call <code>self.expr()</code> for each one.</p>
+<p><code>comparison()</code> handles <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&gt;</code>. Parse an expression --&gt; if we see a comparison operator --&gt; parse another expression --&gt; build a BinOp. Simple.</p>
+<p>Again, try to spend a little time and dry run some case tests on these functions for better understanding.</p>
+<h3>Parsing Statements: this is where things happen</h3>
+<p>We have seen how to build expressions which produce values. But its actually the Statements that cause effects. They do the main stuff.</p>
+<pre><code class="language-python">def assign_stmt(self):
+    var_name = self.curr_token.value
+    self.eat(IDENT)
+    self.eat(ASSIGN)
+    value = self.expr()
+    return Assign(var_name, value)
+
+def say_stmt(self):
+    self.eat(SAY)
+    expr = self.expr()
+    return Say(expr)
+
+def if_stmt(self):
+    self.eat(IF)
+    condition = self.comparison()
+    self.eat(THEN)
+    then_branch = self.statement()
+    else_branch = None
+    if self.curr_token.type == ELSE:
+        self.eat(ELSE)
+        else_branch = self.statement()
+    return If(condition, then_branch, else_branch)
+
+def for_stmt(self):
+    self.eat(FOR)
+    var_name = self.curr_token.value
+    self.eat(IDENT)
+    if self.curr_token.type == IN:
+        self.eat(IN)
+        iterable = self.expr()
+    elif self.curr_token.type == FROM:
+        self.eat(FROM)
+        start = self.expr()
+        self.eat(TO)
+        end = self.expr()
+        iterable = Range(start, end)
+    else:
+        raise Exception(f&#39;Expected IN or FROM after for variable&#39;)
+    self.eat(COLON)
+    body = [self.statement()]
+    return For(var_name, iterable, body)
+
+def statement(self):
+    if self.curr_token.type == IDENT:
+        return self.assign_stmt()
+    elif self.curr_token.type == SAY:
+        return self.say_stmt()
+    elif self.curr_token.type == IF:
+        return self.if_stmt()
+    elif self.curr_token.type == FOR:
+        return self.for_stmt()
+    else:
+        raise Exception(f&#39;Unexpected token {self.curr_token.type} in statement&#39;)
+
+def program(self):
+    statements = []
+    while self.curr_token.type != EOF:
+        statements.append(self.statement())
+    return statements
+</code></pre>
+<p>Not to worry, you will understand how straightforward these are once you get the pattern. In case you forgot, have a look at our Abstract Syntax Tree in my_ast.py.</p>
+<p>The beauty of this design is how it scales so well. Want to add while loops? Add a <code>while_stmt()</code> method and a case in <code>statement()</code>. Want dictionaries? Add <code>dict_literal()</code> and call it from <code>factor()</code>. Want functions? Add <code>fun_stmt()</code> and a Call node.</p>
+<p>Everything follows the same pattern:</p>
+<p>consume expected tokens --&gt; recursively parse the sub-parts --&gt; build a node</p>
+<p>And once you have the AST, you&#39;ve captured the structure perfectly. Now it doesn&#39;t matter if we write <code>x = 5 + 2</code> or <code>x=5+2</code>; both will produce identical syntax trees because our parser strips away all the formatting noise and lefts pure meaning.</p>
+<p>That said, we are done with the hard stuff!</p>
+<p>oh dear! how long we have come</p>
+<h2>Stage 3: Execution (The Interpreter)</h2>
+<p>The lexer and parser did all the heavy lifting.</p>
+<p>They transformed our source code (text) into a clean, structured tree. The final part is building an interpreter that will walk through our tree and do exactly what each node says.</p>
+<p>The interpreter doesn&#39;t need to worry about syntax, precedence, or grammar rules. All of that has been solved. It just needs to answer one question for each node: &quot;What do you do?&quot;</p>
+<p>Because by the time we are reaching execution, the problem has been simplified dramatically. We&#39;re not parsing text anymore -- we&#39;re just traversing a tree and following instructions.</p>
+<p>Let me show you how stupidly simple this becomes.</p>
+<p>The interpreter is basically a tree walker with memory.</p>
+<pre><code class="language-python">class Interpreter:
+    def __init__(self):
+        self.env = {}
+
+    def goto(self, node):
+        method_name = &#39;goto&#39; + type(node).__name__
+        return getattr(self, method_name)(node)
+</code></pre>
+<p>We have <code>self.env</code> which acts as a memory for our program. Every variable you create lives here. So when we say <code>x = 5</code> it means <code>env[&#39;x&#39;] = 5</code>.</p>
+<p>The <code>goto()</code> method is clever: it looks at what type of node it received and automatically calls that particular method. Got a Num node? Calls <code>gotoNum()</code>. Got a BinOp? Calls <code>gotoBinOp()</code>.</p>
+<p>This pattern (called the Visitor Pattern) keeps our code clean where each node type gets its own handler.</p>
+<p>Next comes the heart of our expression evaluation:</p>
+<pre><code class="language-python">def gotoBinOp(self, node):
+    left = self.goto(node.left)
+    right = self.goto(node.right)
+    if node.op == &#39;+&#39;:
+        if isinstance(left, str) or isinstance(right, str):
+            return str(left) + str(right)
+        return left + right
+    elif node.op == &#39;-&#39;:
+        return left - right
+    elif node.op == &#39;*&#39;:
+        return left * right
+    elif node.op == &#39;/&#39;:
+        return left / right
+    elif node.op == &#39;==&#39;:
+        return left == right
+    elif node.op == &#39;!=&#39;:
+        return left != right
+    elif node.op == &#39;&lt;&#39;:
+        return left &lt; right
+    elif node.op == &#39;&gt;&#39;:
+        return left &gt; right
+</code></pre>
+<p>See what happens with nested expressions, when you evaluate <code>2 + 3 * 4</code>:</p>
+<pre><code>gotoBinOp(2 + (3*4))
+  --&gt; left = gotoNum(2) = 2
+  --&gt; right = gotoBinOp(3*4)
+      --&gt; left = gotoNum(3) = 3
+      --&gt; right = gotoNum(4) = 4
+      --&gt; 3 * 4 = 12
+  --&gt; 2 + 12 = 14
+</code></pre>
+<p>Also notice the string concatenation check -- if either side is a string, we convert both to strings and concatenate. This lets you do <code>&quot;x is &quot; + 5</code> and get <code>&quot;x is 5&quot;</code>.</p>
+<h3>Executing Statements: Making things happen</h3>
+<pre><code class="language-python">def gotoAssign(self, node):
+    self.env[node.name] = self.goto(node.value)
+
+def gotoSay(self, node):
+    print(self.goto(node.expr))
+
+def gotoIf(self, node):
+    condition = self.goto(node.condition)
+    if condition:
+        return self.goto(node.then_branch)
+    elif node.else_branch is not None:
+        return self.goto(node.else_branch)
+
+def gotoArray(self, node):
+    return [self.goto(elem) for elem in node.elements]
+
+def gotoRange(self, node):
+    start = self.goto(node.start)
+    end = self.goto(node.end)
+    return list(range(start, end + 1))
+
+def gotoIndex(self, node):
+    array = self.goto(node.array)
+    index = self.goto(node.index)
+    return array[index]
+
+def gotoFor(self, node):
+    iterable = self.goto(node.iterable)
+    for value in iterable:
+        self.env[node.var] = value
+        for stmt in node.body:
+            self.goto(stmt)
+</code></pre>
+<p>Before moving further and reading my explanation, spend some good 10 minutes in trying to understand the code yourself.</p>
+<p>Here&#39;s the main file: <a href="https://github.com/magic-bubblez/BubbleLan/blob/main/interpreter.py">interpreter.py</a></p>
+<p>Look at how straightforward all of these are.</p>
+<p>Assignments evaluate the right side and dump it into memory. <code>say</code> evaluates its expression and prints. If statements check conditions. For loops iterate. The Python for loop does all the heavy lifting - we just piggyback on it.</p>
+<p>yep! that&#39;s how we do it</p>
+<p>Truth to be told, it feels like cheating.</p>
+<p>We use Python&#39;s lists for arrays, Python&#39;s indexing for indexing, Python&#39;s loops for loops. We got all that functionality for free. We&#39;re not implementing data structures from scratch, we&#39;re just mapping our language&#39;s concepts onto Python&#39;s.</p>
+<p>But here&#39;s the thing -- you are supposed to cheat. Everything around you is an abstraction. Built on top of one another.</p>
+<p>That&#39;s literally how all software is built. Python is written in C. C is an abstraction over Assembly which is an abstraction over machine code which is running on a hardware that&#39;s built from transistors, which are built from silicon, which follows quantum physics...and oh god!</p>
+<p>Anyway, let&#39;s move onto the final part.</p>
+<h2>Step 4: Making the stuff actually usable</h2>
+<p>So, we&#39;ve built a working interpreter. We can lex code, parse it into an AST, and execute it. But here&#39;s the thing -- how do people actually use your language?</p>
+<p>or in this case, BubbleLan?</p>
+<p>You can&#39;t just have interpreter.py sitting there. You need an interface -- a way for users to run their code.</p>
+<p>The <code>bubblelan</code> file is your executable -- the thing users actually run.</p>
+<pre><code class="language-python">#!/usr/bin/env python3
+import sys
+import os
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, script_dir)
+
+from lexer import Tokenizer
+from new_parser import Parser
+from interpreter import Interpreter
+</code></pre>
+<p>That first line <code>#!/usr/bin/env python3</code> is called a shebang. It tells your operating system &quot;hey, run this file with Python 3&quot;. This is what lets you do <code>bubblelan</code> command instead of typing <code>python3 bubblelan</code> every time.</p>
+<p>The path manipulation (<code>sys.path.insert</code>) ensures we can find our modules (lexer, parser, interpreter) no matter where BubbleLan is installed on someone&#39;s computer.</p>
+<h3>The REPL: Interactive Programming</h3>
+<p>REPL stands for Read-Eval-Print Loop. It&#39;s an interactive shell where you type code line by line and see results immediately. Python has one (with <code>python</code> command). Node.js has one. And now BubbleLan has one too :D</p>
+<p>Not to worry, REPL is just a while loop.</p>
+<p>it reads input, executes it, prints the result and loop again.</p>
+<pre><code class="language-python">def repl():
+    print(&quot;Welcome to BubbleLan REPL!&quot;)
+    print(&quot;Type &#39;q&#39; to exit&quot;)
+    interpreter = Interpreter()
+    while True:
+        try:
+            code = input(&quot;&gt;&gt;&gt; &quot;)
+            if code.strip() in [&#39;q&#39;, &#39;quit&#39;, &#39;exit&#39;]:
+                print(&quot;byee!&quot;)
+                break
+            if not code.strip():
+                continue
+            lexer = Tokenizer(code)
+            parser = Parser(lexer)
+            ast = parser.program()
+            for node in ast:
+                interpreter.goto(node)
+        except KeyboardInterrupt:
+            print(&quot;\nUse &#39;q&#39; to exit&quot;)
+        except Exception as e:
+            print(f&quot;Error: {e}&quot;)
+</code></pre>
+<p>And that&#39;s all. A REPL is just an infinite loop that reads, evaluates, and prints.</p>
+<p>But notice we create <code>interpreter = Interpreter()</code> once before the loop, not inside it. This is crucial. This means the interpreter persists across lines. Variables you define will stick around and environment dictionary keeps growing as you add more variables.</p>
+<p>If we created a fresh interpreter for each line, every variable would disappear immediately after you define it. (try to dry run the code yourself in order to understand what i&#39;m talking about)</p>
+<h3>Running Files: The Script Mode</h3>
+<p>Having your own file extension sounds cool hence we need a program to run actual <code>.bub</code> files.</p>
+<pre><code class="language-python">def run_file(filename):
+    try:
+        with open(filename, &#39;r&#39;) as f:
+            code = f.read()
+        lexer = Tokenizer(code)
+        parser = Parser(lexer)
+        ast = parser.program()
+        interpreter = Interpreter()
+        for node in ast:
+            interpreter.goto(node)
+    except FileNotFoundError:
+        print(f&quot;Error: File &#39;{filename}&#39; not found&quot;)
+    except Exception as e:
+        print(f&quot;Error: {e}&quot;)
+</code></pre>
+<p>Even simpler than the REPL! No loop needed because we&#39;re running the entire file in one shot.</p>
+<p>If anything goes wrong -- file doesn&#39;t exist, syntax error, runtime error -- we catch it and print a helpful message.</p>
+<p>The key difference from REPL mode: we read everything at once, then execute it all. The REPL reads line by line. File mode reads the whole file, parses it completely, then executes the entire AST.</p>
+<h3>The Command-Line Interface</h3>
+<p>Now we need to tie it all together -- decide whether to run a file or start the REPL based on what the user typed:</p>
+<pre><code class="language-python">def main():
+    if len(sys.argv) == 1:
+        repl()
+    elif len(sys.argv) == 2:
+        if sys.argv[1] in [&#39;-h&#39;, &#39;--help&#39;]:
+            print_help()
+        else:
+            run_file(sys.argv[1])
+
+main()
+</code></pre>
+<p>Here&#39;s the logic: no arguments = REPL, one argument = run that file. this gives you both modes of operation. Want to experiment? REPL. Want to run a script? File mode.</p>
+<p>And just one last step!! We are soooo close....</p>
+<h3>Installing BubbleLan system-wide</h3>
+<pre><code class="language-bash">#!/bin/bash
+echo &quot;Installing BubbleLan...&quot;
+INSTALL_DIR=&quot;/usr/local/bin&quot;
+SCRIPT_DIR=&quot;$(cd &quot;$(dirname &quot;${BASH_SOURCE[0]}&quot;)&quot; &amp;&amp; pwd)&quot;
+sudo ln -sf &quot;$SCRIPT_DIR/bubblelan&quot; &quot;$INSTALL_DIR/bubblelan&quot;
+echo &quot;BubbleLan installed successfully!&quot;
+</code></pre>
+<p>The script creates a symbolic link (or a shortcut) in bin that points to your actual <code>bubblelan</code> file. This directory is already in your system&#39;s PATH, so now you can type <code>bubblelan</code> from anywhere.</p>
+<p>The <code>sudo ln -sf</code> command: <code>sudo</code> = admin permission, <code>ln</code> = create link, <code>-s</code> = symbolic (shortcut, not copy), <code>-f</code> = force (overwrite if exists)</p>
+<hr>
+<p>You&#39;ve successfully built your own programming language from scratch!!!</p>
+<p>You realise how cool is that?</p>
+<p>This isn&#39;t some toy you copied from a tutorial. We designed the syntax. We decided <code>say</code> instead of <code>print</code>. We chose how for loops work. We made arrays use <code>[1, 2, 3]</code> and ranges inclusive with <code>from 1 to 10</code>.</p>
+<p>And now you can write real programs in it:</p>
+<pre><code>say &quot;Fibonacci numbers:&quot;
+a = 0
+b = 1
+for i from 1 to 10:
+    say a
+    c = a + b
+    a = b
+    b = c
+</code></pre>
+<p>All of these work. They actually run. Because you made them work.</p>
+<p>Remember when we started? We had no idea what a lexer was. Tokens? AST? Parser? Everything seemed so complex.</p>
+<p>We understand how text becomes tokens. How tokens become trees. How trees become execution. We&#39;ve seen the whole pipeline from source code to output.</p>
+<p>But here&#39;s the thing: this isn&#39;t the end.</p>
+<h2>What&#39;s Next?</h2>
+<p>BubbleLan is small right now, but the foundation is rock solid. Want to add functions? Dictionaries? Classes? File I/O? The pattern is always the same:</p>
+<ol>
+<li>Add tokens to the lexer</li>
+<li>Create AST nodes</li>
+<li>Teach the parser the syntax</li>
+<li>Make the interpreter execute it</li>
+</ol>
+<p>Four steps. Every time.</p>
+<p>So here&#39;s a challenge to you: build your own language. Not BubbleLan -- yours.</p>
+<p>It doesn&#39;t really have to solve a problem. Make it weird. (before starting to write the grammatical rules, i looked up for what makes a good programming language and i think maybe i did everything opposite of that)</p>
+<p>Start small -- just numbers and addition. Then add variables. Then if statements. Then loops. One feature at a time.</p>
+<p>And before you know it, you&#39;ll have something real and workable.</p>
+<p>If you&#39;ve made it this far, read through all of this -- Thank You.</p>
+<p>That was such a long-ass writing -- some parts were dense, you might&#39;ve had to re-read sections, pause to think, maybe even get a bit confused along the way. But you stuck with it. You pushed through. And that says something about you.</p>
+<p>I really appreciate it.</p>
+<h3>Resources</h3>
+<ul>
+<li>Source code: <a href="https://github.com/magic-bubblez/BubbleLan">github.com/magic-bubblez/BubbleLan</a></li>
+<li>Ruslan&#39;s Tutorial: <a href="https://ruslanspivak.com/lsbasi-part1/">ruslanspivak.com/lsbasi-part1/</a></li>
+<li>Crafting Interpreters: <a href="https://craftinginterpreters.com/">craftinginterpreters.com</a></li>
+</ul>
+
+      </div>
+    </article>
+
+    <footer class="foot">
+      <div class="socials">
+        <a href="mailto:ritvika780@gmail.com"><img src="../../images/email.png" alt="email" /></a>
+        <a href="https://github.com/magic-bubblez"><img src="../../images/github.png" alt="github" /></a>
+      </div>
+      <div class="copy">&copy; ms. bubbles</div>
+    </footer>
+
+  </div>
+</body>
+
+</html>

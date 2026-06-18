@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>why use an artifact manager? (butterflies, drifts and entropy) · ms. bubbles</title>
+  <script src="theme.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fff4e0;
+      --card: #fff0d8;
+      --border: #e8cfa8;
+      --border-soft: #f0dfc0;
+      --ink: #5a3a1e;
+      --ink-soft: #7a5432;
+      --muted: #8a704f;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(186, 91, 107);
+      --shadow: 2px 2px 0 rgba(90, 58, 30, 0.10);
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1816;
+      --card: #231f1c;
+      --border: #3d3530;
+      --border-soft: #332c27;
+      --ink: #e8e0d4;
+      --ink-soft: #c8bca8;
+      --muted: #8a8078;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(200, 110, 128);
+      --shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--rose-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 36px 30px 90px;
+    }
+
+    /* nav */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 0px solid var(--border);
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo a {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 28px;
+      color: var(--rose-dark);
+      letter-spacing: 0.005em;
+    }
+
+    .nav-logo a::after {
+      content: ' ♡';
+      color: var(--rose);
+      font-family: system-ui, sans-serif;
+      font-style: normal;
+      font-size: 15px;
+      vertical-align: 3px;
+      margin-left: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 17px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.on    { color: var(--ink); }
+
+    /* theme toggle */
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--muted);
+      transition: color 0.15s, border-color 0.15s;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-soft);
+    }
+
+    .toggle-icon::before {
+      content: '\263E';
+    }
+
+    [data-theme="dark"] .toggle-icon::before {
+      content: '\2600';
+    }
+
+    /* post */
+    .post {
+      max-width: 680px;
+    }
+
+    .post-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+
+    .post-meta .cat {
+      color: var(--rose-deep);
+    }
+
+    .post-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 48px;
+      line-height: 1.1;
+      color: var(--ink);
+      margin: 0 0 32px;
+    }
+
+    /* prose */
+    .post-body {
+      color: var(--ink-soft);
+    }
+
+    .post-body p {
+      margin: 0 0 1.3em;
+      line-height: 1.8;
+    }
+
+    .post-body h2 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 28px;
+      color: var(--ink);
+      margin: 2em 0 0.6em;
+    }
+
+    .post-body h3 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22px;
+      color: var(--ink);
+      margin: 1.6em 0 0.5em;
+    }
+
+    .post-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    .post-body pre {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--rose);
+      margin: 0 0 1.3em;
+      padding: 0 0 0 18px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body ul,
+    .post-body ol {
+      padding-left: 1.4em;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body li { margin-bottom: 0.3em; }
+
+    .post-body a {
+      color: var(--rose-dark);
+      text-decoration: underline;
+      text-decoration-color: var(--rose);
+    }
+
+    .post-body a:hover { color: var(--ink); }
+
+    .post-body img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin: 1em 0 0.3em;
+      display: block;
+    }
+
+    .post-body img + em,
+    .post-body p:has(img) + p em:only-child {
+      display: block;
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 1.3em;
+      font-style: italic;
+    }
+
+    .post-body strong { color: var(--ink); font-weight: 600; }
+    .post-body em     { color: var(--ink-soft); }
+
+    /* footer */
+    .foot {
+      margin-top: 72px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .socials img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.6;
+    }
+
+    .socials a:hover img { opacity: 1; }
+
+    [data-theme="dark"] .socials img {
+      filter: invert(1) brightness(1.2);
+    }
+
+    .copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <nav class="nav">
+      <div class="nav-logo">
+        <a href="../../index.html">ms. bubbles</a>
+      </div>
+      <div class="nav-links">
+        <a href="../../index.html">about</a>
+        <a href="../work.html">work</a>
+        <a href="../projects.html">projects</a>
+        <a href="../writing.html" class="on">writing</a>
+        <a href="../collections.html">collections</a>
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="toggle-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <article class="post">
+      <p class="post-meta">
+        <span class="date">2026-01-16</span> &middot; <span class="cat">technical</span>
+      </p>
+      <h1 class="post-title">why use an artifact manager? (butterflies, drifts and entropy)</h1>
+      <div class="post-body">
+        <p><img src="images/why-use-an-artifact-manager/Screenshot%202026-06-18%20at%2010.47.21.png" alt="header"></p>
+<p>for managing the artifacts of course. why? so we can choose which version of the app runs in a specific environment. why? because the most recent build is not always the correct one and we need ability to enable instant rollbacks...</p>
+<p>but if i need to rollback, i have git! i&#39;ll just <code>git checkout v1</code>...so why at all? this argument assumes that if you have the same source code, you will get the same binary. but builds are <em>rarely</em> deterministic. its hard to say that new binaries created from the same files would be the exact same as the previous ones.</p>
+<p>for our applications we rarely write all the code. 90% is imported from libraries and then, from a very high-level the culprit for all the &quot;vodoodududu bad stuff&quot; turns out to be SemVer ranges (semantic versioning).</p>
+<p>when you write <code>&quot;express&quot;: &quot;^4.17.0&quot;</code> in <code>package.json</code>, the caret (<code>^</code>) tells the package manager: &quot;Install the <em>latest</em> version that is compatible with <code>4.17.0</code>.&quot; it installs <code>4.17.1</code>. the next day maintainer publishes <code>4.17.2</code>. you run npm install and grab <code>4.17.2</code>. so even if you didn&#39;t change <em>your</em> code, the <em>inputs</em> to the compiler have changed.</p>
+<p>then we have this <code>butterfly effect</code> in the builds. you depend on lib A, lib A depends on lib B. even if you &quot;pin&quot; lib A to an exact version, lib A might have defined B with a floating range (<code>^</code>). this tiny change deep down the layers can break your cute application.</p>
+<p>builds need to be <em><strong>hermetic</strong></em> (if a build is hermetic it is reproducible) and ci/cd pipelines are not. ideally they should be but everything in this world is so tightly deeply coupled that its hard to isolate the entities. the internet is a high-entropy environment and the whole process of software building is chaotic. a particular build relies on the state of the internet at a particular moment and the state is ever-changing. hence we cannot rely on recreation (hoping the build works again); we must rely on preservation (saving those that worked).</p>
+<p>artifact manager is a store of the things. &#39;things&#39; include binaries, libraries, container images, config files, packages etc. to understand the artifact manager, one must internalize the difference b/w <strong>source code</strong> and an <strong>artifact</strong>.</p>
+<p><strong>intent vs reality</strong></p>
+<ul>
+<li>source code <strong>(Mutable)</strong>: it lies within the app layer and its an <em>abstract intent</em>. its a request. it describes the logic but cannot execute it. it is dependent on &#39;when&#39; and &#39;where&#39; it&#39;s built.</li>
+<li>the artifact <strong>(Immutable)</strong>: a concrete reality. an output of the whole process of <em>building</em> which &#39;collapses&#39; the infinite possibilities of the internet (dependencies, base images, networking) into a single, immutable reality.</li>
+</ul>
+<p>the goal is to achieve <em><strong>idempotency</strong></em> i.e &quot;applying same operation multiple times produces the same result&quot;. but it&#39;s hard. because <code>f(x)</code> in software is actually <code>f(Code, Config, Time)</code>.</p>
+<ul>
+<li>code is frozen (artifact)</li>
+<li>config is fluid (env variables)</li>
+<li>time is chaotic (external apis changing, unreliable networks etc....) to achieve idempotency, we have to freeze ALL variables.</li>
+</ul>
+<p>and an Artifact Manager is one of the small solutions to manage the &quot;code&quot; part of our <code>f(x)</code>. it is a vault where we keep these frozen realities.</p>
+<p>a good artifact manager consists of two distinct parts: the <strong>registry</strong> and the <strong>manager</strong>. we store artifacts in a <em>registry</em>, which is an object storage and holds all the heavy binaries. but the registry cannot work alone. it needs a manger. registry is an idiot. its a trash dump and needs the manager which helps the rag-pickers (you ofc) to look up for gold in the trash. it holds the metadata and context so it can answer questions like:</p>
+<p>&quot;who threw this trash here at what time?&quot; &quot;where is the trash sitting currently?&quot; &quot;which piece of trash caused the fire?&quot; etc.</p>
+<p>the registry is the physical storage layer that creates a <em>content addressable system</em> (stuff is retrieved via its content rather than the location) where a binary blob is retrieved via a unique identifier. it focuses on <strong>availabilty</strong>. the manger is the control plane - the database and api layer. it focuses on <strong>governance</strong> and <strong>provenance</strong>.</p>
+<p>The 4 main reasons for having an artifact manager:</p>
+<ol>
+<li><p><em><strong>Reproducibilty</strong></em> (the &quot;what&quot;) put simply, it means deploying the exact same binary multiple times. ensuring that the bitwise stream deployed to server A is identical to server B, eliminating the <em>Heisenbugs</em> (bugs that appear on one env but not on another due to slight binary difference)</p>
+</li>
+<li><p><em><strong>Traceability</strong></em> (the &quot;who&quot;) to know the complete lifecycle of an artifact. to record detailed history and origin of artifacts, their transformations, dependencies and build environments.</p>
+</li>
+<li><p><em><strong>Observability</strong></em> (the &quot;when&quot;) we would like to have detailed logs of the history of operations to determine what went wrong, when and where. to have an immutable log of state changes.</p>
+</li>
+<li><p><em><strong>Recovery</strong></em> when something goes wrong and we would like to switch to prev versions, having an artifact manager gives us the ability to do instant rollbacks (because rebuilding takes time and well, due to other reasons we discussed above...)</p>
+</li>
+</ol>
+<p>Now that we have established the need to freeze the code into an artifact, question arises - <em>is freezing the code enough?</em></p>
+<p>while thinking about the first point - <strong>reproducibility</strong> - there should be a doubt that, let&#39;s say, if we deploy artifact A (immutable code) to a server, does it behave the exact same way every time? the initial assumption, probably, would be yes because the binaries are identical. and here&#39;s where we encounter something called <em><strong>configuration drift</strong></em>.</p>
+<p>every application needs some configs to run. if we use our artifact manager to rollback the code from <code>v2 -&gt; v1</code> and do not rollback the configs, its essentially running the old code with new settings. so does that mean we should also have a store of configs in our artifact manager? if yes, why? and if no, why not?</p>
+<p>before getting answer to the question, you should know about the <strong>Separation Principle</strong>. as given in &quot;The Twelve-Factor App Methodology&quot;:</p>
+<p><code>Apps sometimes store config as constants in the code. This is a violation of twelve-factor, which requires strict separation of config from code. Config varies substantially across deploys, code does not.</code></p>
+<p>So why separate them? code lives forever in artifact manager but the api keys will expire. there&#39;s this practise of rotating your secrets routinely over a specified time period, xyz months, to avoid leaks. if we bake configuration into artifacts, a compromised db password would mean we have to rebuild and deploy the entire app once again.</p>
+<p>but then if we separate them, how do we ensure they match? take a scenario where:</p>
+<ul>
+<li>v1 code needs 2 env variables</li>
+<li>v2 code needs 5 env variables</li>
+</ul>
+<p>if we update code to v2 but forget to update the config (which still has 2 vars), v2 will crash immediately. though for the rollback (the happy accident), if we are on v2 (5 vars in config) and rollback code to v1, it will simply ignore the other 3.</p>
+<p>so we can conclude that the code is usually &quot;forward compatible&quot; (it ignores what it doesn&#39;t need, in this case the extra config). but config is rarely &quot;backward compatible&quot; with new code (missing vars will cause crashes).</p>
+<p><em>how do we fix this crash?</em></p>
+<p>we clearly can&#39;t store the config in the artifact manager (security and rotation), where does it go? <strong>the Vault (secrets manager).</strong> we store these values in a specialised, secure storage system called Secrets Manager or a Vault. so the artifcat manager is kind of &quot;public-ish&quot; and the secrets manager is &quot;private&quot;.</p>
+<p>to fix the crash, we stop treating the artifacts and configs as two separate things. you don&#39;t &quot;deploy code&quot; and then &quot;update config&quot;. you create a <em>Release</em>. a &quot;release&quot; is a single locked object that contains both, eg. <code>(Artifact:sha-123 + Config:v1)</code></p>
+<p>when you deploy, you deploy the release. when you rollback, you rollback to a release. the system will automatically restore the artifacts and modify the configs accordingly.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>.</p>
+<p>all of these big ass concepts just to move a simple stupid file from point A to point B. so much of cognitive overload. is this mentally stimulating? yes. do i enjoy it? very much so. but the ultimate goal as always is, to make it absolutely boring for myself. and till that happens, we ball.</p>
+<p>thanks for reading ^^</p>
+
+      </div>
+    </article>
+
+    <footer class="foot">
+      <div class="socials">
+        <a href="mailto:ritvika780@gmail.com"><img src="../../images/email.png" alt="email" /></a>
+        <a href="https://github.com/magic-bubblez"><img src="../../images/github.png" alt="github" /></a>
+        <a href="https://www.linkedin.com/in/miss-bubbles/"><img src="../../images/linkedin.png" alt="linkedin" /></a>
+      </div>
+      <div class="copy">&copy; ms. bubbles</div>
+    </footer>
+
+  </div>
+</body>
+
+</html>

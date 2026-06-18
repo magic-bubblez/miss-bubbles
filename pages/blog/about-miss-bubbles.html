@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>about miss bubbles · ms. bubbles</title>
+  <script src="theme.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fff4e0;
+      --card: #fff0d8;
+      --border: #e8cfa8;
+      --border-soft: #f0dfc0;
+      --ink: #5a3a1e;
+      --ink-soft: #7a5432;
+      --muted: #8a704f;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(186, 91, 107);
+      --shadow: 2px 2px 0 rgba(90, 58, 30, 0.10);
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1816;
+      --card: #231f1c;
+      --border: #3d3530;
+      --border-soft: #332c27;
+      --ink: #e8e0d4;
+      --ink-soft: #c8bca8;
+      --muted: #8a8078;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(200, 110, 128);
+      --shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--rose-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 36px 30px 90px;
+    }
+
+    /* nav */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 0px solid var(--border);
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo a {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 28px;
+      color: var(--rose-dark);
+      letter-spacing: 0.005em;
+    }
+
+    .nav-logo a::after {
+      content: ' ♡';
+      color: var(--rose);
+      font-family: system-ui, sans-serif;
+      font-style: normal;
+      font-size: 15px;
+      vertical-align: 3px;
+      margin-left: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 17px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.on    { color: var(--ink); }
+
+    /* theme toggle */
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--muted);
+      transition: color 0.15s, border-color 0.15s;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-soft);
+    }
+
+    .toggle-icon::before {
+      content: '\263E';
+    }
+
+    [data-theme="dark"] .toggle-icon::before {
+      content: '\2600';
+    }
+
+    /* post */
+    .post {
+      max-width: 680px;
+    }
+
+    .post-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+
+    .post-meta .cat {
+      color: var(--rose-deep);
+    }
+
+    .post-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 48px;
+      line-height: 1.1;
+      color: var(--ink);
+      margin: 0 0 32px;
+    }
+
+    /* prose */
+    .post-body {
+      color: var(--ink-soft);
+    }
+
+    .post-body p {
+      margin: 0 0 1.3em;
+      line-height: 1.8;
+    }
+
+    .post-body h2 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 28px;
+      color: var(--ink);
+      margin: 2em 0 0.6em;
+    }
+
+    .post-body h3 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22px;
+      color: var(--ink);
+      margin: 1.6em 0 0.5em;
+    }
+
+    .post-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    .post-body pre {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--rose);
+      margin: 0 0 1.3em;
+      padding: 0 0 0 18px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body ul,
+    .post-body ol {
+      padding-left: 1.4em;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body li { margin-bottom: 0.3em; }
+
+    .post-body a {
+      color: var(--rose-dark);
+      text-decoration: underline;
+      text-decoration-color: var(--rose);
+    }
+
+    .post-body a:hover { color: var(--ink); }
+
+    .post-body img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin: 1em 0 0.3em;
+      display: block;
+    }
+
+    .post-body img + em,
+    .post-body p:has(img) + p em:only-child {
+      display: block;
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 1.3em;
+      font-style: italic;
+    }
+
+    .post-body strong { color: var(--ink); font-weight: 600; }
+    .post-body em     { color: var(--ink-soft); }
+
+    /* footer */
+    .foot {
+      margin-top: 72px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .socials img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.6;
+    }
+
+    .socials a:hover img { opacity: 1; }
+
+    [data-theme="dark"] .socials img {
+      filter: invert(1) brightness(1.2);
+    }
+
+    .copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <nav class="nav">
+      <div class="nav-logo">
+        <a href="../../index.html">ms. bubbles</a>
+      </div>
+      <div class="nav-links">
+        <a href="../../index.html">about</a>
+        <a href="../work.html">work</a>
+        <a href="../projects.html">projects</a>
+        <a href="../writing.html" class="on">writing</a>
+        <a href="../collections.html">collections</a>
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="toggle-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <article class="post">
+      <p class="post-meta">
+        <span class="date">2026-04-17</span> &middot; <span class="cat">personal</span>
+      </p>
+      <h1 class="post-title">about miss bubbles</h1>
+      <div class="post-body">
+        <p>miss bubbles likes lemons. it is said that if you have nothing to offer, you can give her a few juicy ones and she&#39;ll still be grateful. she craves spicy more than sweet -- and often, more than people. she adores soft, pretty, simple, slightly flamboyant things; writings that feel random, romantic, a little mystical - the kind that flows like water, quiet and effortless. absolute gem of an art.</p>
+<p>she got memory of a goldfish. she reads, she enjoys, she understands -- and then she forgets quickly. even the things she really liked don&#39;t stay for long. for a little while they do, she goes in deep. questions everything, tries to deconstruct, to trace patterns, to understand what lies underneath. a curious soul - relentlessly question everything, deconstructing the world to find the underlying patterns. she concocts intricate connections in her head, mapping out the &#39;whys&#39; of everything, but she can&#39;t always retain the specifics. most of it doesn&#39;t stay. it fades, slips away, dissolves.</p>
+<p>miss bubbles isn&#39;t very eloquent, and she absolutely despises that. she knows how she should express her thoughts -- the tone, the rhythm, the exact choice of words, thanks to an intuition that is, frankly, sharper than most. but when it comes to actually saying it, she struggles. the words don&#39;t come easy. terrible at sentence construction. so when people say, &quot;you haven&#39;t really understood something if you can&#39;t explain it&quot; --miss bubbles want to defy that statement. she really agrees with it but then also, she disagrees. she understands things in her head --as images, connections, moving pieces; but her inability to provide proper descriptions make her sad. very sad.</p>
+<p>miss bubbles is not a bubbly person. not a social bee. not very talkative either - not even with her own people. she likes quiet. however she likes listening. she&#39;s a good listener. and then also if you get boring, it will show on her face. sometimes she might even ask you to stop. she doesn&#39;t leave strong impressions in the first few meetings. she blends into the background soft and unnoticeable and she thinks that&#39;s a good thing. no need to change it.</p>
+<p>miss bubbles notices people. closely. what they say, what they avoid saying, where things don&#39;t quite make sense. but she doesn&#39;t like judging people too early. everyone wears something -- a version, a mask. so she doesn&#39;t fix opinions too quickly. she listens to who they are <em>right now</em> and watches how they change. she likes it when people grow. when they outgrow their old selves. also, she enjoys those little mind games, games of manipulation. but only with people she deems to be fit, who can keep up with her mind - otherwise it&#39;s no fun. People should know that they&#39;ve been played, miss bubbles does not like to lie. lying is a mental overhead.</p>
+<p>that said, miss bubbles isn&#39;t very opinionated, however she is quite honest. sometimes too much to the point of struggling with small lies. not in the sense that she would feel bad (she does but that&#39;s another story), but if one becomes even a tiny bit suspicious, her laughter would give that away. it&#39;s too funny, she cannot control her face. she&#39;s starting to realise that this is not always convenient.</p>
+<p>when asked for an opinion, she speaks without fluff. she is polite. miss bubbles is sweet. but she says things as she understands them and not everyone appreciates that. people often want softness, sugar, a little cushioning around the truth -- but miss bubbles doesn&#39;t believe in that. to her, pretending feels like a quiet disservice. she wants her people to grow, and she believes, honesty even when a little sharp, would do more help than anything.</p>
+<p>miss bubbles rarely gets angry. almost never. instead, she gets sad and disappointed. on some days she&#39;s a crybaby and once she starts, it&#39;s hard to stop. she laughs just as much, which again, is hard to stop. (maybe she got a disease) anyway, she&#39;s a very reasonable person. sometimes, almost coldly rational.</p>
+<p>introspection comes naturally to her, like breathing. aware of her own thoughts, actions, words, and the way they ripple outward. always observing, always noticing. perhaps she understands people a little too well. which is why it&#39;s hard for her to stay angry at them. but that doesn&#39;t mean she doesn&#39;t observe the actions. she does, quietly.</p>
+<p>miss bubbles like colours and peace. her mind is blank most of the day -- not empty, just still. a quiet surface where things don&#39;t stay for long. it is hard to get a read on her. she is random, unpredictable - even to herself. hence she likes people who can keep up with that randomness -- who can catch a wild thought, throw it back, stretch it further and even build upon it. most people fail the test. miss bubbles doesn&#39;t mind however, she simply doesn&#39;t have an opinion on most of the fellas.</p>
+<p>miss bubbles does not get attached easily. she keeps everyone at a one-hand distance -- except for a select few. only a select few on her list she&#39;s emotionally bonded to, deeply. her bar for having people on the list is quite high. it ain&#39;t easy for nobody. however sweet and polite with hoomans she is, she keeps everyone at one hand distance excluding those select few. everything got a criteria, a reason and an explanation for her way of doing things. she likes to be philosophical and deep.</p>
+<p>&quot;doesn&#39;t matter now&quot; -- has been her most used phrase throughout the years. she doesn&#39;t hold onto things for too long. there is a certain detachment in her - soft and firm. she loves soft romantic pretty things but never lets them blur her sense of reality. she questions again and again. pull things apart and put them back together. tries to stay unbiased, even when it&#39;s hard.</p>
+<p>miss bubbles wasn&#39;t always miss bubbles. she was just &quot;bubbles&quot;. but one day, one call with a random strange human who addressed her as &quot;miss bubbles&quot; - she was delighted, enthralled, captivated even - not simply because of the phrase, but in the manner, voice and tone with which it was said along with hundreds of details that shall not be disclosed. that hooman quickly found a spot in her fav people list and now for first time she&#39;s wholeheartedly enjoying talking to a hooman for long hours about knowledge, reason, world, philosophy, the whys and literally everything else.</p>
+<p>miss bubbles got some commitment issues. she struggles to learn one thing for long unless she can see the architecture of the results. gets distracted very quickly by new ideas and absolutely loves to dive down the rabbit holes (which don&#39;t always work in her favour of doing the things). her attention span has been cooked over the last two years but every day, she is trying to rebuild the discipline.</p>
+<p>miss bubbles genuinely believes in the idea that life is a game and hence she wants to play it for a long long time. like extremely long. pretty long. there&#39;s just too much to see, know and explore around the human world to die in a meagre 100 yrs. even though her desire for longevety&#39;s there, that idea doesn&#39;t dictate her actions. she has thoroughly tricked her mind into believing that she WILL live long that the fear of dying from accidental causes has been totally eliminated. she doesn&#39;t care because of a strong belief, the only unreasonable thing she has reasoned about and for good. she wished she was an elf, just like &quot;frieren&quot;. however she&#39;s not.</p>
+<p>miss bubbles is soft things and sharp edges. observant, detached and attached to a chosen few. a little random, sometimes intense and might be hard to read for others. . . . thank you for reading a little about miss bubbles. even though she thinks it doesn&#39;t matter and you&#39;ve wasted your time, she&#39;s wholeheartedly grateful for that.</p>
+
+      </div>
+    </article>
+
+    <footer class="foot">
+      <div class="socials">
+        <a href="mailto:ritvika780@gmail.com"><img src="../../images/email.png" alt="email" /></a>
+        <a href="https://github.com/magic-bubblez"><img src="../../images/github.png" alt="github" /></a>
+        <a href="https://www.linkedin.com/in/miss-bubbles/"><img src="../../images/linkedin.png" alt="linkedin" /></a>
+      </div>
+      <div class="copy">&copy; ms. bubbles</div>
+    </footer>
+
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Shape of a Voice Controlled Agent · ms. bubbles</title>
+  <script src="theme.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fff4e0;
+      --card: #fff0d8;
+      --border: #e8cfa8;
+      --border-soft: #f0dfc0;
+      --ink: #5a3a1e;
+      --ink-soft: #7a5432;
+      --muted: #8a704f;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(186, 91, 107);
+      --shadow: 2px 2px 0 rgba(90, 58, 30, 0.10);
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1816;
+      --card: #231f1c;
+      --border: #3d3530;
+      --border-soft: #332c27;
+      --ink: #e8e0d4;
+      --ink-soft: #c8bca8;
+      --muted: #8a8078;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(200, 110, 128);
+      --shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--rose-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 36px 30px 90px;
+    }
+
+    /* nav */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 0px solid var(--border);
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo a {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 28px;
+      color: var(--rose-dark);
+      letter-spacing: 0.005em;
+    }
+
+    .nav-logo a::after {
+      content: ' ♡';
+      color: var(--rose);
+      font-family: system-ui, sans-serif;
+      font-style: normal;
+      font-size: 15px;
+      vertical-align: 3px;
+      margin-left: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 17px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.on    { color: var(--ink); }
+
+    /* theme toggle */
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--muted);
+      transition: color 0.15s, border-color 0.15s;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-soft);
+    }
+
+    .toggle-icon::before {
+      content: '\263E';
+    }
+
+    [data-theme="dark"] .toggle-icon::before {
+      content: '\2600';
+    }
+
+    /* post */
+    .post {
+      max-width: 680px;
+    }
+
+    .post-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+
+    .post-meta .cat {
+      color: var(--rose-deep);
+    }
+
+    .post-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 48px;
+      line-height: 1.1;
+      color: var(--ink);
+      margin: 0 0 32px;
+    }
+
+    /* prose */
+    .post-body {
+      color: var(--ink-soft);
+    }
+
+    .post-body p {
+      margin: 0 0 1.3em;
+      line-height: 1.8;
+    }
+
+    .post-body h2 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 28px;
+      color: var(--ink);
+      margin: 2em 0 0.6em;
+    }
+
+    .post-body h3 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22px;
+      color: var(--ink);
+      margin: 1.6em 0 0.5em;
+    }
+
+    .post-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    .post-body pre {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--rose);
+      margin: 0 0 1.3em;
+      padding: 0 0 0 18px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body ul,
+    .post-body ol {
+      padding-left: 1.4em;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body li { margin-bottom: 0.3em; }
+
+    .post-body a {
+      color: var(--rose-dark);
+      text-decoration: underline;
+      text-decoration-color: var(--rose);
+    }
+
+    .post-body a:hover { color: var(--ink); }
+
+    .post-body img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin: 1em 0 0.3em;
+      display: block;
+    }
+
+    .post-body img + em,
+    .post-body p:has(img) + p em:only-child {
+      display: block;
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 1.3em;
+      font-style: italic;
+    }
+
+    .post-body strong { color: var(--ink); font-weight: 600; }
+    .post-body em     { color: var(--ink-soft); }
+
+    /* footer */
+    .foot {
+      margin-top: 72px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .socials img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.6;
+    }
+
+    .socials a:hover img { opacity: 1; }
+
+    [data-theme="dark"] .socials img {
+      filter: invert(1) brightness(1.2);
+    }
+
+    .copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <nav class="nav">
+      <div class="nav-logo">
+        <a href="../../index.html">ms. bubbles</a>
+      </div>
+      <div class="nav-links">
+        <a href="../../index.html">about</a>
+        <a href="../work.html">work</a>
+        <a href="../projects.html">projects</a>
+        <a href="../writing.html" class="on">writing</a>
+        <a href="../collections.html">collections</a>
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="toggle-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <article class="post">
+      <p class="post-meta">
+        <span class="date">2026-04-19</span> &middot; <span class="cat">technical</span>
+      </p>
+      <h1 class="post-title">The Shape of a Voice Controlled Agent</h1>
+      <div class="post-body">
+        <p><img src="images/the-shape-of-a-voice-controlled-agent/Screenshot-2026-04-18-at-18-06-27.png" alt="header"></p>
+<blockquote>
+<p>{<em>on medium (just in case): <a href="https://medium.com/p/7b32723a8639">link</a></em>}</p>
+</blockquote>
+<p>A voice controlled agent is a piece of software that sits on your machine, listens to what you say and does things in response. &quot;local&quot; gets used to mean three different things - runs on your machine, is private from third parties, does not require the internet.</p>
+<p>At a structural level, it is a five-stage unidirectional pipeline.</p>
+<ol>
+<li>Audio Input: Raw bytes captured</li>
+<li>STT (Speech-to-Text): A pure function mapping bytes to a string</li>
+<li>Intent Classifier: A compressor mapping infinite natural language to a structured JSON plan</li>
+<li>Orchestrator: A control layer that validates the structured plan and resolves it into specific execution paths.</li>
+<li>Handlers: The execution layer sitting under the authority of Orchestrator and directly interacts with state of the machine -- <em>how</em> something is to be executed.</li>
+</ol>
+<blockquote>
+<p>To have a look inside the code and know how it works, how it has been implemented, go through the README of the repo <a href="https://github.com/magic-bubblez/local-voice-controlled-agent">here</a>.
+the upcoming sections of the blog do not focus on the implementation part but the designing and architecture.</p>
+</blockquote>
+<h2>The boundary of Intent</h2>
+<p>Intent classifier is the 3rd layer of system which is responsible for taking in the raw string input from a Speech-to-Text model and using language models to identify the intent of the user. Even after the intent gets well understood, how to make sure the actions to be executed gets mapped accordingly?</p>
+<p>LLMs are probabilistic. They give us the language understanding that cannot be programmed by hand. However give them entire control of the systems and it will fail majority of the times in ways that cannot be predicted. Mathematically even though they choose the most <em>probable</em> option out of an infinite possibilities, but &quot;probably&quot; in itself is still unreliable.</p>
+<p>The only way to make an LLM reliable is to put a <strong>deterministic layer</strong> above it. Because language is an infinite space, to collapse that infinite input into a finite, executable output, we need a structured schema.</p>
+<p>We achieve this by managing the context:</p>
+<p><code>LLMContext = {System Instructions} + {Tool Metadata} + {User Transcript}</code></p>
+<p>By injecting the metadata of our available tools into the LLM&#39;s memory before every call, we force it to speak the language of our defined contract. Here&#39;s a flow:</p>
+<ul>
+<li>user speaks -&gt; Speech-to-Text</li>
+<li>Intent Classifier -&gt; JSON Plan (The LLM maps &quot;make a folder for my cat pics&quot; to <code>{&quot;action&quot;: &quot;create_dir&quot;, &quot;name&quot;: &quot;cats&quot;}</code>).</li>
+</ul>
+<hr>
+<h2>The Separation of Concerns: &quot;What&quot; vs. &quot;How&quot;</h2>
+<p>In a well-designed system, no single component should know too much. Otherwise we get a &quot;leaky abstraction&quot; -- the logic of one layer starts spilling into another, making the whole thing fragile and hard to reason about.</p>
+<p>We maintain this boundary through a distinction between the <strong>Orchestrator</strong> (Layer IV) and the <strong>Handlers</strong> (Layer V).</p>
+<p>Think of the Orchestrator as the <strong>Authority</strong>. Its only job is to decide <em>what</em> should happen. It looks at the JSON plan, validates the schema, and checks its registry. It got brains but no hands. Its pure logic and cannot do anything alone without an implementer.</p>
+<p>The Handlers are the <strong>Mechanism</strong>. They are the &quot;hands&quot; of the system. A handler is a small function that executes the commands as directed by the orchestrator. It doesn&#39;t ask question, simply interacts with the machine&#39;s state and reports back.</p>
+<h4>Why go through this trouble?</h4>
+<p>Why can&#39;t a single layer do both jobs? If we can combine two things into one, that should be a good thing, right?</p>
+<p>wrong. Iff the orchestrator starts doing the work itself, the system becomes a tangled mess. we won&#39;t be able to test the &quot;brain&quot; of our agent without changing the state of our machine everytime. There&#39;s a reason every stage in the pipeline is bounded by a contract; isolation is necessary if we want our systems to be hermetic. It allows the systems to be predictable.</p>
+<hr>
+<h2>The Registry Pattern</h2>
+<p>Now we know that orchestrator validates the json plan and call the handlers accordingly. But then how does the orchestrator know which handlers exist and when to call the right one? For this, we use a <em>Registry</em>.</p>
+<p>The Registry is essentially a dictionary that maps <strong>Intent</strong> to <strong>Implementation</strong>.</p>
+<p>When the system starts, every handler &quot;registers&quot; itself. The Orchestrator maintains this list as a single source of truth. When a JSON plan comes in with an action like, for example - <code>&quot;screenshot&quot;</code>, the Orchestrator looks it up in the registry:</p>
+<ol>
+<li><strong>Does &quot;screenshot&quot; exist?</strong> (Validation)</li>
+<li><strong>What function handles it?</strong> (Resolution)</li>
+<li><strong>Does the input match the required params?</strong> (Contract checking)</li>
+</ol>
+<p>The registry makes the system <strong>extensible</strong>. If I want the agent to do another action on my device, I don&#39;t have to rewrite the core engine. I just write a new handler and add one line to the registry.</p>
+<p>The registry is an &quot;idiot&quot; in the best way, it&#39;s just a lookup table.</p>
+<hr>
+<h3>Why build this way?</h3>
+<p>When you start designing a system, it&#39;s easy to start at the surface and ask &quot;how?&quot; too quickly. That&#39;s how you end up in a rabbit hole. You start at Layer 1, list a few problems, and suddenly fifty other questions emerge before you&#39;ve even drawn a box.</p>
+<p>The discipline of system design is <strong>staying at one level of abstraction at a time.</strong> I&#39;ve learned that grouping similar ideas and labeling them under one &quot;box&quot; and deferring it for later is much better. By defining clear criteria and building solutions around them layer by layer, one can see the whole shape of the system without getting lost in the noise.</p>
+<p>goal is to make a system <em>boring</em>. if its boring, it means the design is finally working.</p>
+<p>and until it&#39;s so perfect that I have nothing left to tweak...we ball :D</p>
+<p>thanks for reading ^^</p>
+
+      </div>
+    </article>
+
+    <footer class="foot">
+      <div class="socials">
+        <a href="mailto:ritvika780@gmail.com"><img src="../../images/email.png" alt="email" /></a>
+        <a href="https://github.com/magic-bubblez"><img src="../../images/github.png" alt="github" /></a>
+        <a href="https://www.linkedin.com/in/miss-bubbles/"><img src="../../images/linkedin.png" alt="linkedin" /></a>
+      </div>
+      <div class="copy">&copy; ms. bubbles</div>
+    </footer>
+
+  </div>
+</body>
+
+</html>

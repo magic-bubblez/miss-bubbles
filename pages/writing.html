@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>writing · ms. bubbles</title>
+  <script src="../theme.js"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
@@ -21,6 +22,20 @@
       --rose-dark: rgb(186, 91, 107);
     }
 
+    [data-theme="dark"] {
+      --bg: #1a1816;
+      --card: #231f1c;
+      --border: #3d3530;
+      --border-soft: #332c27;
+      --ink: #e8e0d4;
+      --ink-soft: #c8bca8;
+      --muted: #8a8078;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(200, 110, 128);
+      --shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -30,7 +45,7 @@
       background: var(--bg);
       color: var(--ink);
       font-family: 'Inter', system-ui, sans-serif;
-      font-size: 15.5px;
+      font-size: 17px;
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
     }
@@ -52,9 +67,9 @@
     }
 
     .wrap {
-      max-width: 720px;
+      max-width: 760px;
       margin: 0 auto;
-      padding: 30px 26px 80px;
+      padding: 36px 30px 90px;
     }
 
     /* shared nav */
@@ -83,7 +98,7 @@
     .nav-logo a {
       font-family: 'Instrument Serif', serif;
       font-style: italic;
-      font-size: 26px;
+      font-size: 28px;
       color: var(--rose-dark);
       letter-spacing: 0.005em;
     }
@@ -100,8 +115,9 @@
 
     .nav-links {
       display: flex;
+      align-items: center;
       gap: 18px;
-      font-size: 16px;
+      font-size: 17px;
     }
 
     .nav-links a {
@@ -117,12 +133,38 @@
       color: var(--ink);
     }
 
+    /* theme toggle */
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--muted);
+      transition: color 0.15s, border-color 0.15s;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-soft);
+    }
+
+    .toggle-icon::before {
+      content: '\263E';
+    }
+
+    [data-theme="dark"] .toggle-icon::before {
+      content: '\2600';
+    }
+
     /* page head */
     .page-title {
-      font-family: 'Instrument Serif', serif;
+      font-family: 'Instrument Serif', italic;
       font-style: italic;
-      font-weight: 400;
-      font-size: 44px;
+      font-weight: 500;
+      font-size: 48px;
       line-height: 1;
       color: var(--ink);
       margin: 0 0 12px;
@@ -130,7 +172,7 @@
 
     .intro {
       color: var(--ink-soft);
-      font-size: 15px;
+      font-size: 16px;
       margin: 0 0 36px;
       max-width: 560px;
     }
@@ -227,12 +269,12 @@
 
     .posts .date {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11.5px;
+      font-size: 12.5px;
       color: var(--muted);
     }
 
     .posts .title {
-      font-size: 15px;
+      font-size: 16.5px;
       line-height: 1.5;
     }
 
@@ -297,9 +339,13 @@
       opacity: 1;
     }
 
+    [data-theme="dark"] .socials img {
+      filter: invert(1) brightness(1.2);
+    }
+
     .copy {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
+      font-size: 12px;
       color: var(--muted);
     }
 
@@ -332,7 +378,7 @@
       }
 
       .page-title {
-        font-size: 36px;
+        font-size: 40px;
       }
 
       .posts li {
@@ -362,6 +408,9 @@
         <a href="projects.html">projects</a>
         <a href="writing.html" class="on">writing</a>
         <a href="collections.html">collections</a>
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="toggle-icon"></span>
+        </button>
       </div>
     </nav>
 
@@ -381,67 +430,60 @@
       </aside>
 
       <ul class="posts">
-        <!-- AUTOMATED_BLOGS_START -->
         <li data-cat="technical">
           <span class="date">2026-05-20</span>
-          <span class="title"><a
-              href="https://magic-bubblez.bearblog.dev/i-built-an-external-context-layer-for-ai-agents-most-of-it-already-exists-heres-what-doesnt/"
-              target="_blank" rel="noopener">I built an external context layer for AI agents - most of it already
-              exists, here’s what doesn’t</a></span>
+          <span class="title"><a href="blog/external-context-layer-for-ai-agents.html">I built an external context layer
+              for AI agents - most of it already exists, here's what doesn't</a></span>
         </li>
-
         <li data-cat="technical">
           <span class="date">2026-04-19</span>
-          <span class="title"><a href="https://magic-bubblez.bearblog.dev/the-shape-of-a-voice-controlled-agent/"
-              target="_blank" rel="noopener">The Shape of a Voice Controlled Agent</a></span>
+          <span class="title"><a href="blog/the-shape-of-a-voice-controlled-agent.html">The Shape of a Voice Controlled
+              Agent</a></span>
         </li>
-
         <li data-cat="personal">
           <span class="date">2026-04-17</span>
-          <span class="title"><a href="https://magic-bubblez.bearblog.dev/about-miss-bubbles/" target="_blank"
-              rel="noopener">about miss bubbles</a></span>
+          <span class="title"><a href="blog/about-miss-bubbles.html">about miss bubbles</a></span>
         </li>
         <li data-cat="essays">
           <span class="date">2026-02-08</span>
-          <span class="title"><a href="https://magic-bubblez.bearblog.dev/on-belief-in-god/" target="_blank"
-              rel="noopener">On Belief in God</a></span>
+          <span class="title"><a href="blog/on-belief-in-god.html">On Belief in God</a></span>
         </li>
         <li data-cat="technical">
           <span class="date">2026-01-16</span>
-          <span class="title"><a href="https://magic-bubblez.bearblog.dev/why-use-an-artifact-manager/" target="_blank"
-              rel="noopener">why use an artifact manager? (butterflies, drifts and entropy)</a></span>
+          <span class="title"><a href="blog/why-use-an-artifact-manager.html">why use an artifact manager? (butterflies,
+              drifts and entropy)</a></span>
         </li>
         <li data-cat="technical">
           <span class="date">2025-10-22</span>
           <span class="title"><a
-              href="https://medium.com/@ritvika780/what-it-takes-to-build-a-programming-language-60ebe8d84078?source=rss-043a4f41b145------2"
-              target="_blank" rel="noopener">What it takes to build a Programming Language?</a></span>
+              href="https://medium.com/@ritvika780/what-it-takes-to-build-a-programming-language-60ebe8d84078">What it
+              takes to build a Programming Language?</a></span>
         </li>
         <li data-cat="technical">
           <span class="date">2025-09-15</span>
           <span class="title"><a
-              href="https://medium.com/@ritvika780/how-to-build-a-hot-or-not-for-github-48f22e562ab4?source=rss-043a4f41b145------2"
-              target="_blank" rel="noopener">How to build a ‘Hot or Not’ for GitHub</a></span>
+              href="https://medium.com/@ritvika780/how-to-build-a-hot-or-not-for-github-48f22e562ab4?source=rss-043a4f41b145------2">
+              How to build a 'Hot or Not' for Github</a></span>
         </li>
         <li data-cat="essays">
           <span class="date">2025-06-25</span>
-          <span class="title"><a
-              href="https://medium.com/@ritvika780/sweet-little-things-118cadc06cab?source=rss-043a4f41b145------2"
-              target="_blank" rel="noopener">Sweet little things…</a></span>
+          <span class="title"><a href="https://medium.com/@ritvika780/sweet-little-things-118cadc06cab">Sweet little
+              things</a></span>
         </li>
+
         <li data-cat="essays">
           <span class="date">2025-06-25</span>
           <span class="title"><a
-              href="https://medium.com/@ritvika780/learning-money-the-right-way-rethinking-financial-education-3f762bf80e7c?source=rss-043a4f41b145------2"
-              target="_blank" rel="noopener">Learning Money the right way — Rethinking financial education</a></span>
+              href="https://medium.com/@ritvika780/learning-money-the-right-way-rethinking-financial-education-3f762bf80e7c">Learning
+              Money the Right Way: Rethinking Financial Education</a></span>
         </li>
+
         <li data-cat="technical">
           <span class="date">2024-12-16</span>
           <span class="title"><a
-              href="https://medium.com/@ritvika780/a-brief-introduction-to-basic-architecture-of-linux-ef8c28bbc652?source=rss-043a4f41b145------2"
-              target="_blank" rel="noopener">A brief introduction to Basic architecture of Linux</a></span>
+              href="https://medium.com/@ritvika780/a-brief-introduction-to-basic-architecture-of-linux-ef8c28bbc652?source=rss-043a4f41b145------2">A
+              brief introduction to Basic architecture of Linux</a></span>
         </li>
-        <!-- AUTOMATED_BLOGS_END -->
       </ul>
 
     </div>
@@ -450,11 +492,13 @@
       <div class="socials">
         <a href="mailto:ritvika780@gmail.com"><img src="../images/email.png" alt="email" /></a>
         <a href="https://github.com/magic-bubblez"><img src="../images/github.png" alt="github" /></a>
+        <a href="https://www.linkedin.com/in/miss-bubbles/"><img src="../images/linkedin.png" alt="linkedin" /></a>
       </div>
-      <div class="copy">© ms. bubbles</div>
+      <div class="copy">&copy; ms. bubbles</div>
     </footer>
 
   </div>
+
 </body>
 
 </html>

@@ -5,10 +5,10 @@
   "description": "ms. bubbles portfolio + auto content pipeline",
   "type": "commonjs",
   "scripts": {
-    "update": "node scripts/update-content.js"
+    "build": "node scripts/build-blog.js"
   },
   "dependencies": {
-    "dotenv": "^17.2.3",
-    "rss-parser": "^3.13.0"
+    "gray-matter": "^4.0.3",
+    "marked": "^15.0.0"
   }
 }
