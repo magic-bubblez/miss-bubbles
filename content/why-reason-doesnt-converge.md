@@ -4,7 +4,7 @@ date: 2026-06-26
 category: essays
 description: "why reason doesn't converge"
 ---
-![header](images/on-the-roots-of-disagreement/header.png)
+![header](images/why-reason-doesnt-converge/header.webp)
 
 in an unbiased system there exists a tree of reason. start at any node and if one reasons enough they're bound to reach the same conclusion others did before them.
 
