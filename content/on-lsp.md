@@ -27,9 +27,8 @@ the protocol is ordinary. it simply standardizes the shape of communication b/w 
 
 so whatever you do in your workspace, however it may evolve - the editor continuously streams changes to the language server and the server keeps updating its internal representation of the workspace. that's how one able to experience all those magical features of a pack inside the editor. 
 
-.
-.
-.
-
 alright then, what lesson do we draw from here? 
-stop trying to understand everyone’s internals and just build a clean way to communicate.
+<br>.<br>
+.<br>
+.<br>
+<span style="font-style: italic; font-weight: bold;">stop trying to understand everyone’s internals and just build a clean way to communicate.</span>

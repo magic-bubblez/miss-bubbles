@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>how to spot a cognitively dangerous writing · ms. bubbles</title>
+  <script src="theme.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fff4e0;
+      --card: #fff0d8;
+      --border: #e8cfa8;
+      --border-soft: #f0dfc0;
+      --ink: #5a3a1e;
+      --ink-soft: #7a5432;
+      --muted: #8a704f;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(186, 91, 107);
+      --shadow: 2px 2px 0 rgba(90, 58, 30, 0.10);
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1816;
+      --card: #231f1c;
+      --border: #3d3530;
+      --border-soft: #332c27;
+      --ink: #e8e0d4;
+      --ink-soft: #c8bca8;
+      --muted: #8a8078;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(200, 110, 128);
+      --shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--rose-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 36px 30px 90px;
+    }
+
+    /* nav */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 0px solid var(--border);
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo a {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 28px;
+      color: var(--rose-dark);
+      letter-spacing: 0.005em;
+    }
+
+    .nav-logo a::after {
+      content: ' ♡';
+      color: var(--rose);
+      font-family: system-ui, sans-serif;
+      font-style: normal;
+      font-size: 15px;
+      vertical-align: 3px;
+      margin-left: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 17px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+    }
+
+    .nav-links a.on {
+      color: var(--ink);
+    }
+
+    /* theme toggle */
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--muted);
+      transition: color 0.15s, border-color 0.15s;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-soft);
+    }
+
+    .toggle-icon::before {
+      content: '\263E';
+    }
+
+    [data-theme="dark"] .toggle-icon::before {
+      content: '\2600';
+    }
+
+    /* post */
+    .post {
+      max-width: 680px;
+    }
+
+    .post-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+
+    .post-meta .cat {
+      color: var(--rose-deep);
+    }
+
+    .post-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 48px;
+      line-height: 1.1;
+      color: var(--ink);
+      margin: 0 0 32px;
+    }
+
+    /* prose */
+    .post-body {
+      color: var(--ink-soft);
+    }
+
+    .post-body p {
+      margin: 0 0 1.3em;
+      line-height: 1.8;
+    }
+
+    .post-body h2 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 28px;
+      color: var(--ink);
+      margin: 2em 0 0.6em;
+    }
+
+    .post-body h3 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22px;
+      color: var(--ink);
+      margin: 1.6em 0 0.5em;
+    }
+
+    .post-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    .post-body pre {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--rose);
+      margin: 0 0 1.3em;
+      padding: 0 0 0 18px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body ul,
+    .post-body ol {
+      padding-left: 1.4em;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body li {
+      margin-bottom: 0.3em;
+    }
+
+    .post-body a {
+      color: var(--rose-dark);
+      text-decoration: underline;
+      text-decoration-color: var(--rose);
+    }
+
+    .post-body a:hover {
+      color: var(--ink);
+    }
+
+    .post-body img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin: 1em 0 0.3em;
+      display: block;
+    }
+
+    .post-body img+em,
+    .post-body p:has(img)+p em:only-child {
+      display: block;
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 1.3em;
+      font-style: italic;
+    }
+
+    .post-body strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .post-body em {
+      color: var(--ink-soft);
+    }
+
+    /* footer */
+    .foot {
+      margin-top: 72px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .socials img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.6;
+    }
+
+    .socials a:hover img {
+      opacity: 1;
+    }
+
+    [data-theme="dark"] .socials img {
+      filter: invert(1) brightness(1.2);
+    }
+
+    .copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <nav class="nav">
+      <div class="nav-logo">
+        <a href="../../index.html">ms. bubbles</a>
+      </div>
+      <div class="nav-links">
+        <a href="../../index.html">about</a>
+        <a href="../work.html">work</a>
+        <a href="../projects.html">projects</a>
+        <a href="../writing.html" class="on">writing</a>
+        <a href="../collections.html">collections</a>
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="toggle-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <article class="post">
+      <p class="post-meta">
+        <span class="date">2026-07-11</span> &middot; <span class="cat">essays</span>
+      </p>
+      <h1 class="post-title">how to spot a cognitively dangerous writing</h1>
+      <div class="post-body">
+        <p><img src="images/how-to-spot/header.webp" alt="alt text"></p>
+        <p>do you ever question the author of a book or blogpost, not just the facts they present or claims they make,
+          but observing how, if at all, the piece is constructed to land as obviously correct? how it&#39;s built to
+          make you <i>feel</i> like it&#39;s true? </p>
+        <p>let me explain why this article (<a
+            href="https://magic-bubblez.github.io/miss-bubbles/pages/blog/on-lsp.html?t=d">on LSP: how X × Y became X +
+            Y</a>) is &quot;cognitively dangerous&quot; for you as a passive reader and
+          if you didn&#39;t notice - you should have.</p>
+        <p>(give it a read before moving forward. it&#39;s short, ~480 words)<br>.<br>.<br>.<br>next up, i&#39;ll be
+          giving you 3 examples of the sections in this article that could be termed as &quot;cognitively
+          dangerous&quot;
+          depending on the reader. see if you can identify 3 of them (or more) yourself. </p>
+        <p>the primary issue is not the use of metaphors to explain engineering concepts or that the information is
+          untrue but it&#39;s the manner in which it delivers some absolute statements that sounds nice and logically
+          true. </p>
+        <p><b>here&#39;s the first example:</b></p>
+        <blockquote>&quot;....a magical pack should only do what it&#39;s supposed to do - perform magic. that&#39;s all. anything more than that is a violation of its boundary and overreach - overreach is exactly how systems rot......&quot;</blockquote>
+        <p>notice how the author (a.k.a me) doesn&#39;t tell you what overreach <em>is</em>. they just tell you what it
+          <em>does</em> - it rots the systems. that&#39;s the whole definition you get and it works because the reader
+          will conclude &quot;overreach rots the systems, overreach is bad!&quot;<br>now try this:<br>&quot;in what
+          context overreach has been used?&quot;<br>&quot;why a component crossing its boundary is exactly
+          bad?&quot;<br>&quot;a component crossing its boundary can be the most viable solution sometimes, right?&quot;
+        </p>
+        <p>the article never answers these. because you, as a reader didn&#39;t question the &quot;feel-good&quot;
+          intuitive conclusion you arrived on your own, the statement now feels like a declaration - something one must
+          always follow. </p>
+        <p>and this is what i mean by cognitively dangerous - it&#39;s not a lie, it&#39;s not incorrect - it&#39;s a
+          sentence that <em>feels</em> like a verified claim. you read it, something in you clicks and you move on
+          without questioning the click. that click or nodding along is the dangerous part. it&#39;s the moment
+          certainty washes over you and you might try to verify that claim to check if its true or not. but it&#39;s not
+          the way to go. here are somethings worth keeping in mind: </p>
+        <ol>
+          <li>
+            <p><strong>don&#39;t ask</strong> <strong><i>what&#39;s wrong</i></strong>, <strong>ask for</strong>
+              <strong><i>what&#39;s missing</i></strong>.<br> every time a piece hands you a conclusion and the moment
+              you
+              start feeling
+              certain,
+              read for the gaps - dig in deeper to see if the certainty comes from a valid premise or not.
+            </p>
+          </li>
+          <li>
+            <p><strong>look for counterexamples</strong><br> most people&#39;s instinct when they agree with something
+              is to look for more evidence that supports it. a good claim is one where you can imagine, at least in
+              theory, what would prove it wrong. if someone claims &quot;water boils at 100ºC&quot;, you can imagine the
+              possibility of what can break it - go to a higher altitude, a vaccum or at a high pressure - the claim
+              will be falsified. &quot;overreach rots systems&quot; - you cannot prove it wrong, you cannot prove it
+              right. it&#39;s a hollow statement. </p>
+            <p> <b><i>an important thing to note here</i></b> - searching for counterexamples is only true when
+              somebody is
+              making a claim about something related to scientific domains. the moment someone states a value, belief
+              or
+              ideology - the test stops being true. those are opinions and unverifiable opinions don&#39;t belong to a
+              rational system. &quot;be kind to people&quot; isn&#39;t falsifiable nor it was ever trying to be.
+              it&#39;s a stance someone is choosing to hold and the claim stems from personal beliefs. you cannot test
+              it unless it&#39;s your own. </p>
+          </li>
+          <li>
+            <p><strong>notice when a word is doing a job a sentence should be doing.</strong><br> &quot;overreach&quot;,
+              &quot;discipline&quot;, &quot;debt&quot;, &quot;evil&quot;, &quot;rot&quot; and the list is long. these
+              words show up in a lot of writing because they are compact and already carry a verdict that most people
+              are familiar with. they let the writer skip most of the explaining part. so anytime these type of words
+              are a load-bearing term in the sentence, slow down there. unpack it in your head. usually you do so by
+              turning it into multiple sentences the writer chose not to write.</p>
+          </li>
+        </ol>
+        <p>let&#39;s move onto the second example: </p>
+        <blockquote>&quot;.....a well designed component should have exactly one reason to exist in a system, any responsibility
+          bolted onto it beyond that reason is a debt the system as a whole will have to pay.....&quot;</blockquote>
+        <p>this one is
+          not hollow like the previous one. it has a good idea behind it - many times it makes life easier to split a
+          tangled thing into clean separate parts, maintaining clear boundaries is helpful that&#39;s true. but the
+          problem is - it has been phrased like a rule with no exceptions without defining the conditions under which it
+          will hold up. </p>
+        <p>&quot;...<em>exactly</em> one reason, <em>any</em> responsibility bolted on is <em>a debt the system will
+            have to pay</em>...&quot;</p>
+        <p>the phrase has been written so confidently to make it feel like a wisdom. no room for &quot;sometimes,&quot;
+          no room for &quot;depends&quot; and this phrasing is how the entire machinery of emotional engineering works -
+          whether its a tech blog, self-help books (eww) or random write-ups that you read online - majority of them
+          hand you statements that are conditionally true, strip off the conditions and state it as absolute. so here
+          are some more things worth keeping in mind: </p>
+        <ol start="4">
+          <li>
+            <p><strong>everytime an absolute statement is made, question it</strong><br> <em>always</em>,
+              <em>never</em>, <em>exactly</em>, <em>should</em> - whenever you come across words similar to these, you
+              need to ask: under what conditions does the statement hold true? look for the counterexamples and search
+              for the gaps.
+            </p>
+          </li>
+          <li>
+            <p><strong>be aware of the tone that has been used</strong><br> the tone does something different, separate
+              from the words. read out the 2nd example once again. that&#39;s not an engineering language anymore, it
+              sounds like a preaching. <em>debt, boundary, violation</em> - all these words are borrowed from morality
+              to make you feel like straying away from it would cost you something.</p>
+          </li>
+        </ol>
+        <br>
+        <p>let's see the final example - the last line of this article. it&#39;s the kind of line that is meant to
+          outlive everything else, get screenshotted and remembered after you&#39;ve forgotten what a LSP even is: </p>
+        <blockquote>&quot;... stop trying to understand everyone&#39;s internals and just build a clean way to
+          communicate.&quot;</blockquote>
+        <p>i doubt i&#39;ll need to further explain where it goes wrong. apply the above mentioned
+          5 points and it&#39;s not hard to realise. </p>
+        <p>.<br>.<br>.</p>
+        <p>in the schools nobody is taught to question the author of a book. we are taught to read it, remember it,
+          maybe write an essay on what the author meant, we grow up trusting the pages because they are printed and they
+          come from a book and books are &quot;sacred&quot;. </p>
+        <p>like how a dumb man doesn&#39;t become wise by only growing up in age, that old habit doesn&#39;t go away
+          after school, it simply grows. rather than printed books, it&#39;s blogs, tweets and random online posts now.
+          anything written with a enough certainty comes out as a valid claim on surface, being an active reader
+          isn&#39;t to only understand what has been written but to question your own understanding and to question the
+          ideas that a writing convinced you into believing. </p>
+
+      </div>
+    </article>
+
+    <footer class="foot">
+      <div class="socials">
+        <a href="mailto:ritvika780@gmail.com"><img src="../../images/email.webp" alt="email" /></a>
+        <a href="https://github.com/magic-bubblez"><img src="../../images/github.webp" alt="github" /></a>
+        <a href="https://www.linkedin.com/in/miss-bubbles/"><img src="../../images/linkedin.webp" alt="linkedin" /></a>
+      </div>
+      <div class="copy">&copy; ms. bubbles</div>
+    </footer>
+
+  </div>
+</body>
+
+</html>

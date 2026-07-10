@@ -13,6 +13,7 @@ const fs   = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 const { marked } = require('marked');
+marked.use({ breaks: true, gfm: true });
 
 // ──── PATHS ─────────────────────────────────────────────────────────────────
 const ROOT        = path.join(__dirname, '..');

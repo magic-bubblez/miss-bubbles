@@ -349,11 +349,7 @@
 <p><img src="images/external-context-layer-for-ai-agents/Screenshot-2026-05-20-at-07-12-45.webp" alt="architecture"></p>
 <h2>The Pipeline</h2>
 <p>The pipeline goes like this:</p>
-<p>→ activity comes in
-→ entities get extracted
-→ each new event gets compared against existing threads by entity overlap and temporal proximity
-→ assigned to the right thread or a new one gets created
-→ the whole thing is stored as a graph with explicit edges between events, entities, and threads.</p>
+<p>→ activity comes in<br>→ entities get extracted<br>→ each new event gets compared against existing threads by entity overlap and temporal proximity<br>→ assigned to the right thread or a new one gets created<br>→ the whole thing is stored as a graph with explicit edges between events, entities, and threads.</p>
 <p>When an agent queries Meniscus, it doesn&#39;t get a raw dump of your history. It gets a subgraph - the relevant thread, its events, its entities. A bounded, structured slice of context instead of everything at once. The agent injects that into its prompt and answers grounded in your actual work.</p>
 <h2>The Demo</h2>
 <p>For the demo of the project, here&#39;s what I did:</p>
