@@ -1,10 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>work · magicBubbles</title>
+  <script>
+    (function () {
+      try {
+        var m = location.search.match(/[?&]t=(d|l)/);
+        var stored = localStorage.getItem('bubbles-theme');
+        var theme = m ? (m[1] === 'd' ? 'dark' : 'light') : stored;
+        if (theme === 'dark' || theme === 'light') {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    html,
+    body {
+      background: #fff4e0;
+    }
+
+    html[data-theme="dark"],
+    html[data-theme="dark"] body {
+      background: #1a1816;
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <script src="../theme.js"></script>
   <link
     href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
@@ -396,6 +421,7 @@
         left: -20px;
       }
     }
+    @view-transition { navigation: auto; }
   </style>
 </head>
 
@@ -479,6 +505,7 @@
     </footer>
 
   </div>
+  <script src="../smooth-nav.js"></script>
 </body>
 
 </html>
