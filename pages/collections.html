@@ -410,6 +410,42 @@
       letter-spacing: 0.06em;
     }
 
+    .yt-card {
+      margin-top: 30px;
+      border: 1.5px solid var(--gold);
+      border-radius: 10px;
+      padding: 14px 12px 14px 10px;
+      background: linear-gradient(135deg, rgba(228,184,90,0.10) 0%, rgba(228,184,90,0.04) 100%);
+      box-shadow: 0 0 18px rgba(228,184,90,0.15), 2px 2px 0 rgba(0,0,0,0.3);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .yt-card:hover {
+      background: linear-gradient(135deg, rgba(228,184,90,0.18) 0%, rgba(228,184,90,0.08) 100%);
+      box-shadow: 0 0 28px rgba(228,184,90,0.28), 2px 2px 0 rgba(0,0,0,0.3);
+    }
+
+    .yt-logo {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+    }
+
+    .yt-card-name {
+      font-family: 'Courier Prime', monospace;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
     .widget {
       border-top: 1px solid var(--rule);
       padding-top: 16px;
@@ -910,6 +946,15 @@
         <div class="stamp-label">LAST UPDATED</div>
         <div class="stamp-big">APR · 2026</div>
       </div>
+
+      <a class="yt-card" href="https://www.youtube.com/@magic_bubblez" target="_blank" rel="noopener">
+        <svg class="yt-logo" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="48" height="48" rx="10" fill="#e4b85a" opacity="0.15"/>
+          <path d="M38.5 16.8a4.2 4.2 0 0 0-2.96-2.97C33.1 13.2 24 13.2 24 13.2s-9.1 0-11.54.63A4.2 4.2 0 0 0 9.5 16.8C8.87 19.25 8.87 24 8.87 24s0 4.75.63 7.2a4.2 4.2 0 0 0 2.96 2.97C14.9 34.8 24 34.8 24 34.8s9.1 0 11.54-.63a4.2 4.2 0 0 0 2.96-2.97C39.13 28.75 39.13 24 39.13 24s0-4.75-.63-7.2z" fill="#e4b85a"/>
+          <path d="M21 28.5l8.5-4.5-8.5-4.5v9z" fill="#051b1d"/>
+        </svg>
+        <span class="yt-card-name">@magic_bubblez</span>
+      </a>
     </aside>
 
     <!-- CENTER STAGE -->
