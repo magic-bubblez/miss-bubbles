@@ -175,6 +175,25 @@
     .vcard {
       display: flex;
       flex-direction: column;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 3px 3px 0 var(--border);
+      overflow: hidden;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+
+    .vcard:hover {
+      box-shadow: 5px 5px 0 var(--border);
+      transform: translate(-1px, -1px);
+    }
+
+    [data-theme="dark"] .vcard {
+      box-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+    }
+
+    [data-theme="dark"] .vcard:hover {
+      box-shadow: 5px 5px 0 rgba(0,0,0,0.4);
     }
 
     .thumb-link {
@@ -183,9 +202,7 @@
       width: 100%;
       aspect-ratio: 16 / 9;
       overflow: hidden;
-      border-radius: 6px;
-      background: var(--card);
-      border: 1px solid var(--border);
+      background: var(--border);
     }
 
     .thumb-link:hover .thumb {
@@ -240,7 +257,7 @@
 
     /* card body */
     .vcard-body {
-      margin-top: 12px;
+      padding: 14px 16px 16px;
     }
 
     .vcard-meta {
