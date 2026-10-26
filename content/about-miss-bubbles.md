@@ -1,7 +1,7 @@
 ---
 title: "about miss bubbles"
 date: 2026-04-17
-category: personal
+category: observations
 description: "a little character sketch of miss bubbles -- lemons, goldfish memory, sharp intuition, and soft edges."
 ---
 

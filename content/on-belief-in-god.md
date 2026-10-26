@@ -1,7 +1,7 @@
 ---
 title: "On Belief in God"
 date: 2026-02-08
-category: essays
+category: thinking
 description: "God as a constructive reality -- why belief isn't about truth but about sanity, hope, and navigating the unknown."
 ---
 ![alt text](<images/on belief in god/Screenshot 2026-06-18 at 10.46.44.webp>)

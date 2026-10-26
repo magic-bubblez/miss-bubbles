@@ -291,26 +291,26 @@
       display: none;
     }
 
-    #f-essays:checked~.wrap .posts li:not([data-cat="essays"]) {
+    #f-thinking:checked~.wrap .posts li:not([data-cat="thinking"]) {
       display: none;
     }
 
-    #f-personal:checked~.wrap .posts li:not([data-cat="personal"]) {
+    #f-observations:checked~.wrap .posts li:not([data-cat="observations"]) {
       display: none;
     }
 
     /* active label styles */
     #f-all:checked~.wrap label[for="f-all"],
     #f-technical:checked~.wrap label[for="f-technical"],
-    #f-essays:checked~.wrap label[for="f-essays"],
-    #f-personal:checked~.wrap label[for="f-personal"] {
+    #f-thinking:checked~.wrap label[for="f-thinking"],
+    #f-observations:checked~.wrap label[for="f-observations"] {
       color: var(--rose-dark);
     }
 
     #f-all:checked~.wrap label[for="f-all"]::before,
     #f-technical:checked~.wrap label[for="f-technical"]::before,
-    #f-essays:checked~.wrap label[for="f-essays"]::before,
-    #f-personal:checked~.wrap label[for="f-personal"]::before {
+    #f-thinking:checked~.wrap label[for="f-thinking"]::before,
+    #f-observations:checked~.wrap label[for="f-observations"]::before {
       color: var(--rose-dark);
     }
 
@@ -393,8 +393,8 @@
   <!-- CSS-only filter radios (hidden) -->
   <input type="radio" name="filter" id="f-all" class="f" checked />
   <input type="radio" name="filter" id="f-technical" class="f" />
-  <input type="radio" name="filter" id="f-essays" class="f" />
-  <input type="radio" name="filter" id="f-personal" class="f" />
+  <input type="radio" name="filter" id="f-thinking" class="f" />
+  <input type="radio" name="filter" id="f-observations" class="f" />
 
   <div class="wrap">
 
@@ -421,17 +421,21 @@
 
       <aside class="side">
         <ul class="side-list">
-          <li><label for="f-all">all <span class="side-count">9</span></label></li>
+          <li><label for="f-all">all <span class="side-count">10</span></label></li>
           <li><label for="f-technical">technical <span class="side-count">4</span></label></li>
-          <li><label for="f-essays">essays <span class="side-count">4</span></label></li>
-          <li><label for="f-personal">personal <span class="side-count">1</span></label></li>
+          <li><label for="f-thinking">thinking <span class="side-count">4</span></label></li>
+          <li><label for="f-observations">observations <span class="side-count">2</span></label></li>
         </ul>
 
       </aside>
 
       <ul class="posts">
         <!-- AUTOMATED_BLOGS_START -->
-        <li data-cat="essays">
+        <li data-cat="thinking">
+          <span class="date">2026-10-6</span>
+          <span class="title"><a href="blog/write.html">Write badly, then write better and rewrite again</a></span>
+        </li>
+        <li data-cat="thinking">
           <span class="date">2026-07-11</span>
           <span class="title"><a href="blog/how-to-spot-a-cognitively-dangerous-writing.html">how to spot a cognitively dangerous writing</a></span>
         </li>
@@ -439,11 +443,11 @@
           <span class="date">2026-07-09</span>
           <span class="title"><a href="blog/on-lsp.html">on LSP: how X × Y became X + Y</a></span>
         </li>
-        <li data-cat="essays">
+        <li data-cat="observations">
           <span class="date">2026-07-04</span>
           <span class="title"><a href="blog/efficient-flowers-bloom.html">efficient flowers bloom</a></span>
         </li>
-        <li data-cat="essays">
+        <li data-cat="thinking">
           <span class="date">2026-06-26</span>
           <span class="title"><a href="blog/why-reason-doesnt-converge.html">why reason doesn't converge?</a></span>
         </li>
@@ -455,11 +459,11 @@
           <span class="date">2026-04-19</span>
           <span class="title"><a href="blog/the-shape-of-a-voice-controlled-agent.html">The Shape of a Voice Controlled Agent</a></span>
         </li>
-        <li data-cat="personal">
+        <li data-cat="observations">
           <span class="date">2026-04-17</span>
           <span class="title"><a href="blog/about-miss-bubbles.html">about miss bubbles</a></span>
         </li>
-        <li data-cat="essays">
+        <li data-cat="thinking">
           <span class="date">2026-02-08</span>
           <span class="title"><a href="blog/on-belief-in-god.html">On Belief in God</a></span>
         </li>

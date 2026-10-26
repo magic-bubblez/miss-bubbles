@@ -1,7 +1,7 @@
 ---
 title: "efficient flowers bloom"
 date: 2026-07-04
-category: essays
+category: observations
 description: "efficient flowers bloom"
 ---
 ![header](images/efficient-flowers-bloom/header.webp)

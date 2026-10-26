@@ -1,7 +1,7 @@
 ---
 title: "how to spot a cognitively dangerous writing"
 date: 2026-07-11
-category: essays
+category: thinking
 description: "Why reading with feeling is dangerous and how to spot absolute statements stripped of conditions."
 ---
 ![alt text](<images/how-to-spot/header.webp>)

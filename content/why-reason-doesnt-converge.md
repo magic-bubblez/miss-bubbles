@@ -1,7 +1,7 @@
 ---
 title: "why reason doesn't converge?"
 date: 2026-06-26
-category: essays
+category: thinking
 description: "why reason doesn't converge"
 ---
 ![header](images/why-reason-doesnt-converge/header.webp)
