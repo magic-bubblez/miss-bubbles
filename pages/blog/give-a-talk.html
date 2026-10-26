@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tips on how to give a talk that people remember · ms. bubbles</title>
+  <script src="theme.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fff4e0;
+      --card: #fff0d8;
+      --border: #e8cfa8;
+      --border-soft: #f0dfc0;
+      --ink: #5a3a1e;
+      --ink-soft: #7a5432;
+      --muted: #8a704f;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(186, 91, 107);
+      --shadow: 2px 2px 0 rgba(90, 58, 30, 0.10);
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1816;
+      --card: #231f1c;
+      --border: #3d3530;
+      --border-soft: #332c27;
+      --ink: #e8e0d4;
+      --ink-soft: #c8bca8;
+      --muted: #8a8078;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(200, 110, 128);
+      --shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--rose-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 36px 30px 90px;
+    }
+
+    /* nav */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 0px solid var(--border);
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo a {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 28px;
+      color: var(--rose-dark);
+      letter-spacing: 0.005em;
+    }
+
+    .nav-logo a::after {
+      content: ' ♡';
+      color: var(--rose);
+      font-family: system-ui, sans-serif;
+      font-style: normal;
+      font-size: 15px;
+      vertical-align: 3px;
+      margin-left: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 17px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.on    { color: var(--ink); }
+
+    /* theme toggle */
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--muted);
+      transition: color 0.15s, border-color 0.15s;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-soft);
+    }
+
+    .toggle-icon::before {
+      content: '\263E';
+    }
+
+    [data-theme="dark"] .toggle-icon::before {
+      content: '\2600';
+    }
+
+    /* post */
+    .post {
+      max-width: 680px;
+    }
+
+    .post-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+
+    .post-meta .cat {
+      color: var(--rose-deep);
+    }
+
+    .post-title {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 48px;
+      line-height: 1.1;
+      color: var(--ink);
+      margin: 0 0 32px;
+    }
+
+    /* prose */
+    .post-body {
+      color: var(--ink-soft);
+    }
+
+    .post-body p {
+      margin: 0 0 1.3em;
+      line-height: 1.8;
+    }
+
+    .post-body h2 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 28px;
+      color: var(--ink);
+      margin: 2em 0 0.6em;
+    }
+
+    .post-body h3 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22px;
+      color: var(--ink);
+      margin: 1.6em 0 0.5em;
+    }
+
+    .post-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    .post-body pre {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--rose);
+      margin: 0 0 1.3em;
+      padding: 0 0 0 18px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body ul,
+    .post-body ol {
+      padding-left: 1.4em;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body li { margin-bottom: 0.3em; }
+
+    .post-body a {
+      color: var(--rose-dark);
+      text-decoration: underline;
+      text-decoration-color: var(--rose);
+    }
+
+    .post-body a:hover { color: var(--ink); }
+
+    .post-body img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin: 1em 0 0.3em;
+      display: block;
+    }
+
+    .post-body img + em,
+    .post-body p:has(img) + p em:only-child {
+      display: block;
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 1.3em;
+      font-style: italic;
+    }
+
+    .post-body strong { color: var(--ink); font-weight: 600; }
+    .post-body em     { color: var(--ink-soft); }
+
+    /* footer */
+    .foot {
+      margin-top: 72px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .socials img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.6;
+    }
+
+    .socials a:hover img { opacity: 1; }
+
+    [data-theme="dark"] .socials img {
+      filter: invert(1) brightness(1.2);
+    }
+
+    .copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <nav class="nav">
+      <div class="nav-logo">
+        <a href="../../index.html">ms. bubbles</a>
+      </div>
+      <div class="nav-links">
+        <a href="../../index.html">about</a>
+        <a href="../work.html">work</a>
+        <a href="../projects.html">projects</a>
+        <a href="../writing.html" class="on">writing</a>
+        <a href="../collections.html">collections</a>
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="toggle-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <article class="post">
+      <p class="post-meta">
+        <span class="date">2026-10-3</span> &middot; <span class="cat">observations</span>
+      </p>
+      <h1 class="post-title">Tips on how to give a talk that people remember</h1>
+      <div class="post-body">
+        <p>Here&#39;re some tips on how to give a talk that people actually remember: </p>
+<ol>
+<li><p>Know your audience beforehand.<br>Think about the expected average expertise in the room and calibrate your material to that. </p>
+</li>
+<li><p>Don&#39;t dumb down your explanations.<br>That&#39;s lazy. Instead learn to make the road to understanding complex topics much simpler. </p>
+</li>
+<li><p>Your goal, should always be to provide maximum value to the audience stop focusing too much on how you look, how you sound and other tiny peripherals. </p>
+</li>
+<li><p>Always present your agenda in the beginning of the talk.<br>Let people know what they&#39;re gonna learn at the end of the session. </p>
+</li>
+<li><p>Get comfortable with pauses. Don&#39;t try to fill in the silence with filler words. </p>
+</li>
+<li><p>keep your slides minimal. Five bullet points maximum per slide and even that&#39;s generous. The moment there&#39;s too much text on the board, people start reading it instead of listening to you. Slides are the visual &amp; you are the explanation. Never read off too much from your slides. </p>
+</li>
+<li><p>If the topic is complex start by connecting the concept to something the audience already knows. </p>
+</li>
+<li><p>Add memes to your slides. everybody knows it. duh. (it&#39;s non-negotiable) </p>
+</li>
+<li><p>And when someone asks a question you don&#39;t know the answer to just say &quot;i don&#39;t know&quot; rather than blabbering on and on and trying to fool the audience.</p>
+</li>
+</ol>
+<p>~by someone who&#39;s been on enough stages to just know<br>(ps: it&#39;s v obvious, you don&#39;t even need to stand on a stage to know this stuff)</p>
+
+      </div>
+    </article>
+
+    <footer class="foot">
+      <div class="socials">
+        <a href="mailto:ritvika780@gmail.com"><img src="../../images/email.webp" alt="email" /></a>
+        <a href="https://github.com/magic-bubblez"><img src="../../images/github.webp" alt="github" /></a>
+        <a href="https://www.linkedin.com/in/miss-bubbles/"><img src="../../images/linkedin.webp" alt="linkedin" /></a>
+      </div>
+      <div class="copy">&copy; ms. bubbles</div>
+    </footer>
+
+  </div>
+</body>
+
+</html>
