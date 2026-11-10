@@ -50,6 +50,7 @@ function postPageHtml({ title, date, category, bodyHtml }) {
     rel="stylesheet" />
   <style>
     :root {
+      overscroll-behavior: none;
       --bg: #fff4e0;
       --card: #fff0d8;
       --border: #e8cfa8;
@@ -81,6 +82,7 @@ function postPageHtml({ title, date, category, bodyHtml }) {
 
     body {
       margin: 0;
+      overscroll-behavior: none;
       background: var(--bg);
       color: var(--ink);
       font-family: 'Inter', system-ui, sans-serif;
