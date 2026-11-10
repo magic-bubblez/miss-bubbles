@@ -162,97 +162,51 @@
       content: '\2600';
     }
 
-    /* page head */
+    /* page head: title + filter pills inline */
+    .page-head {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px 24px;
+      margin-bottom: 36px;
+    }
+
     .page-title {
-      font-family: 'Instrument Serif', italic;
+      font-family: 'Instrument Serif', serif;
       font-style: italic;
       font-weight: 500;
       font-size: 48px;
       line-height: 1;
       color: var(--ink);
-      margin: 0 0 12px;
-    }
-
-    .intro {
-      color: var(--ink-soft);
-      font-size: 16px;
-      margin: 0 0 36px;
-      max-width: 560px;
-    }
-
-    /* two-column: sidebar + posts */
-    .layout {
-      display: grid;
-      grid-template-columns: 150px 1fr;
-      gap: 28px;
-      align-items: start;
-      position: relative;
-    }
-
-    .layout::before {
-      content: '';
-      position: absolute;
-      left: 160px;
-      top: 4px;
-      bottom: 0;
-      width: 0;
-      border-left: 1px dashed var(--border);
-    }
-
-    /* sidebar */
-    .side {
-      position: sticky;
-      top: 24px;
-    }
-
-    .side-list {
-      list-style: none;
-      padding: 0;
       margin: 0;
+      flex-shrink: 0;
     }
 
-    .side-list li {
-      margin-bottom: 3px;
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
     }
 
-    .side-list label {
-      display: inline-flex;
-      align-items: baseline;
-      gap: 6px;
+    .pill {
+      display: inline-block;
       font-family: 'Instrument Serif', serif;
       font-style: italic;
-      font-size: 19px;
-      color: var(--ink-soft);
-      padding: 2px 0;
-      cursor: pointer;
-      transition: color 0.15s, transform 0.15s;
-    }
-
-    .side-list label::before {
-      content: '✦';
-      font-size: 9px;
-      color: var(--rose);
-      font-style: normal;
-      margin-right: 2px;
-    }
-
-    .side-list label:hover {
-      color: var(--rose-dark);
-      transform: translateX(2px);
-    }
-
-    .side-count {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10.5px;
+      font-size: 17px;
+      padding: 5px 18px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
       color: var(--muted);
-      font-style: normal;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      line-height: 1.4;
     }
 
-    .side-gif {
-      width: 56px;
-      height: 56px;
-      margin: 28px 0 0 12px;
-      opacity: 0.85;
+    .pill:hover {
+      border-color: var(--ink-soft);
+      color: var(--ink);
     }
 
     /* posts — flat list */
@@ -265,7 +219,7 @@
     .posts li {
       display: grid;
       grid-template-columns: 92px 1fr;
-      gap: 16px;
+      gap: 0;
       padding: 7px 0;
       align-items: baseline;
     }
@@ -279,6 +233,8 @@
     .posts .title {
       font-size: 16.5px;
       line-height: 1.5;
+      border-left: 1px dashed var(--border);
+      padding-left: 20px;
     }
 
     .posts .title a {
@@ -290,31 +246,40 @@
     }
 
     /* filter states — show/hide based on checked radio */
-    #f-technical:checked~.wrap .posts li:not([data-cat="technical"]) {
-      display: none;
+    #f-technical:checked~.wrap .posts li:not([data-cat="technical"]) { display: none; }
+    #f-thinking:checked~.wrap .posts li:not([data-cat="thinking"])   { display: none; }
+    #f-observations:checked~.wrap .posts li:not([data-cat="observations"]) { display: none; }
+    #f-notes:checked~.wrap .posts li:not([data-cat="notes"])         { display: none; }
+
+    /* active pill colors per filter */
+    #f-all:checked~.wrap label[for="f-all"] {
+      background: var(--rose-dark);
+      border-color: var(--rose-dark);
+      color: #fff;
     }
 
-    #f-thinking:checked~.wrap .posts li:not([data-cat="thinking"]) {
-      display: none;
+    #f-notes:checked~.wrap label[for="f-notes"] {
+      background: #8ba974;
+      border-color: #8ba974;
+      color: #fff;
     }
 
-    #f-observations:checked~.wrap .posts li:not([data-cat="observations"]) {
-      display: none;
+    #f-technical:checked~.wrap label[for="f-technical"] {
+      background: #7eaecf;
+      border-color: #7eaecf;
+      color: #fff;
     }
 
-    /* active label styles */
-    #f-all:checked~.wrap label[for="f-all"],
-    #f-technical:checked~.wrap label[for="f-technical"],
-    #f-thinking:checked~.wrap label[for="f-thinking"],
+    #f-thinking:checked~.wrap label[for="f-thinking"] {
+      background: #b59ad4;
+      border-color: #b59ad4;
+      color: #fff;
+    }
+
     #f-observations:checked~.wrap label[for="f-observations"] {
-      color: var(--rose-dark);
-    }
-
-    #f-all:checked~.wrap label[for="f-all"]::before,
-    #f-technical:checked~.wrap label[for="f-technical"]::before,
-    #f-thinking:checked~.wrap label[for="f-thinking"]::before,
-    #f-observations:checked~.wrap label[for="f-observations"]::before {
-      color: var(--rose-dark);
+      background: #c9a04a;
+      border-color: #c9a04a;
+      color: #fff;
     }
 
     /* foot */
@@ -353,40 +318,17 @@
     }
 
     @media (max-width: 680px) {
-      .layout {
-        grid-template-columns: 1fr;
-        gap: 18px;
-      }
-
-      .layout::before {
-        display: none;
-      }
-
-      .side {
-        position: static;
-      }
-
-      .side-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px 14px;
-      }
-
-      .side-list label {
-        font-size: 16px;
-      }
-
-      .side-gif {
-        display: none;
-      }
-
       .page-title {
-        font-size: 40px;
+        font-size: 36px;
+      }
+
+      .pill {
+        font-size: 15px;
+        padding: 4px 14px;
       }
 
       .posts li {
-        grid-template-columns: 1fr;
-        gap: 2px;
+        grid-template-columns: 72px 1fr;
       }
     }
   </style>
@@ -398,6 +340,7 @@
   <input type="radio" name="filter" id="f-technical" class="f" />
   <input type="radio" name="filter" id="f-thinking" class="f" />
   <input type="radio" name="filter" id="f-observations" class="f" />
+  <input type="radio" name="filter" id="f-notes" class="f" />
 
   <div class="wrap">
 
@@ -418,23 +361,23 @@
       </div>
     </nav>
 
-    <h1 class="page-title">writings</h1>
-    <p class="intro">some brain dumps.</p>
-
-    <div class="layout">
-
-      <aside class="side">
-        <ul class="side-list">
-          <li><label for="f-all">all <span class="side-count">11</span></label></li>
-          <li><label for="f-technical">technical <span class="side-count">4</span></label></li>
-          <li><label for="f-thinking">thinking <span class="side-count">4</span></label></li>
-          <li><label for="f-observations">observations <span class="side-count">3</span></label></li>
-        </ul>
-
-      </aside>
+    <div class="page-head">
+      <h1 class="page-title">writings</h1>
+      <div class="filters">
+        <label for="f-all" class="pill">all</label>
+        <label for="f-notes" class="pill">notes</label>
+        <label for="f-technical" class="pill">technical</label>
+        <label for="f-thinking" class="pill">thinking</label>
+        <label for="f-observations" class="pill">observations</label>
+      </div>
+    </div>
 
       <ul class="posts">
         <!-- AUTOMATED_BLOGS_START -->
+        <li data-cat="notes">
+          <span class="date">2026-11-10</span>
+          <span class="title"><a href="blog/notes-1-db.html">[notes-db] logs and indices in DB</a></span>
+        </li>
         <li data-cat="thinking">
           <span class="date">2026-10-6</span>
           <span class="title"><a href="blog/write.html">Write badly, then write better and rewrite again</a></span>
@@ -442,6 +385,14 @@
         <li data-cat="observations">
           <span class="date">2026-10-3</span>
           <span class="title"><a href="blog/give-a-talk.html">Tips on how to give a talk that people remember</a></span>
+        </li>
+        <li data-cat="notes">
+          <span class="date">2026-10-01</span>
+          <span class="title"><a href="blog/notes-2-misc.html">[notes-misc] September recap</a></span>
+        </li>
+        <li data-cat="notes">
+          <span class="date">2026-08-25</span>
+          <span class="title"><a href="blog/notes-3-misc.html">[notes-misc] Settlement &amp; reconciliation in financial workflows</a></span>
         </li>
         <li data-cat="thinking">
           <span class="date">2026-07-11</span>
@@ -458,6 +409,10 @@
         <li data-cat="thinking">
           <span class="date">2026-06-26</span>
           <span class="title"><a href="blog/why-reason-doesnt-converge.html">why reason doesn't converge?</a></span>
+        </li>
+        <li data-cat="notes">
+          <span class="date">2026-05-22</span>
+          <span class="title"><a href="blog/notes-1-misc.html">[notes-misc] Took part in a hackathon</a></span>
         </li>
         <li data-cat="technical">
           <span class="date">2026-05-20</span>
@@ -512,8 +467,6 @@
               brief introduction to Basic architecture of Linux</a></span>
         </li>
       </ul>
-
-    </div>
 
     <footer class="foot">
       <div class="socials">

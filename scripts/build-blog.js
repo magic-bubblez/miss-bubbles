@@ -25,7 +25,7 @@ const CONTENT_IMAGES = path.join(CONTENT_DIR, 'images');
 const BLOG_IMAGES    = path.join(BLOG_DIR, 'images');
 
 // ──── CONSTANTS ──────────────────────────────────────────────────────────────
-const VALID_CATEGORIES = new Set(['technical', 'thinking', 'observations']);
+const VALID_CATEGORIES = new Set(['technical', 'thinking', 'observations', 'notes']);
 const DEFAULT_CATEGORY = 'technical';
 
 const BLOGS_START_MARKER = '<!-- AUTOMATED_BLOGS_START -->';
@@ -198,11 +198,10 @@ function postPageHtml({ title, date, category, bodyHtml }) {
     }
 
     .post-title {
-      font-family: 'Instrument Serif', serif;
-      font-style: italic;
-      font-weight: 400;
-      font-size: 48px;
-      line-height: 1.1;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 1.3;
       color: var(--ink);
       margin: 0 0 32px;
     }
@@ -494,7 +493,7 @@ function main() {
   console.log('  updated pages/writing.html blog list');
 
   // Update sidebar counts
-  const counts = { technical: 0, thinking: 0, observations: 0 };
+  const counts = { technical: 0, thinking: 0, observations: 0, notes: 0 };
   for (const { category } of posts) {
     if (category in counts) counts[category]++;
   }
@@ -505,6 +504,7 @@ function main() {
   writingHtml = updateSidebarCount(writingHtml, 'f-technical', counts.technical);
   writingHtml = updateSidebarCount(writingHtml, 'f-thinking', counts.thinking);
   writingHtml = updateSidebarCount(writingHtml, 'f-observations', counts.observations);
+  writingHtml = updateSidebarCount(writingHtml, 'f-notes', counts.notes);
   fs.writeFileSync(WRITING_HTML, writingHtml, 'utf8');
   console.log('  updated sidebar counts');
 

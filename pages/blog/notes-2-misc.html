@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[notes-misc] September recap · ms. bubbles</title>
+  <script src="theme.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fff4e0;
+      --card: #fff0d8;
+      --border: #e8cfa8;
+      --border-soft: #f0dfc0;
+      --ink: #5a3a1e;
+      --ink-soft: #7a5432;
+      --muted: #8a704f;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(186, 91, 107);
+      --shadow: 2px 2px 0 rgba(90, 58, 30, 0.10);
+    }
+
+    [data-theme="dark"] {
+      --bg: #1a1816;
+      --card: #231f1c;
+      --border: #3d3530;
+      --border-soft: #332c27;
+      --ink: #e8e0d4;
+      --ink-soft: #c8bca8;
+      --muted: #8a8078;
+      --rose: #e8a0ae;
+      --rose-deep: #d17d93;
+      --rose-dark: rgb(200, 110, 128);
+      --shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: var(--rose-dark);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 36px 30px 90px;
+    }
+
+    /* nav */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 0px solid var(--border);
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo a {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 28px;
+      color: var(--rose-dark);
+      letter-spacing: 0.005em;
+    }
+
+    .nav-logo a::after {
+      content: ' ♡';
+      color: var(--rose);
+      font-family: system-ui, sans-serif;
+      font-style: normal;
+      font-size: 15px;
+      vertical-align: 3px;
+      margin-left: 2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 17px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.on    { color: var(--ink); }
+
+    /* theme toggle */
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      color: var(--muted);
+      transition: color 0.15s, border-color 0.15s;
+      line-height: 1;
+    }
+
+    .theme-toggle:hover {
+      color: var(--ink);
+      border-color: var(--ink-soft);
+    }
+
+    .toggle-icon::before {
+      content: '\263E';
+    }
+
+    [data-theme="dark"] .toggle-icon::before {
+      content: '\2600';
+    }
+
+    /* post */
+    .post {
+      max-width: 680px;
+    }
+
+    .post-meta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+
+    .post-meta .cat {
+      color: var(--rose-deep);
+    }
+
+    .post-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 32px;
+      line-height: 1.3;
+      color: var(--ink);
+      margin: 0 0 32px;
+    }
+
+    /* prose */
+    .post-body {
+      color: var(--ink-soft);
+    }
+
+    .post-body p {
+      margin: 0 0 1.3em;
+      line-height: 1.8;
+    }
+
+    .post-body h2 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 28px;
+      color: var(--ink);
+      margin: 2em 0 0.6em;
+    }
+
+    .post-body h3 {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 22px;
+      color: var(--ink);
+      margin: 1.6em 0 0.5em;
+    }
+
+    .post-body code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 4px;
+      padding: 1px 5px;
+    }
+
+    .post-body pre {
+      background: var(--card);
+      border: 1px solid var(--border-soft);
+      border-radius: 6px;
+      padding: 16px 20px;
+      overflow-x: auto;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body pre code {
+      background: none;
+      border: none;
+      padding: 0;
+      font-size: 14px;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--rose);
+      margin: 0 0 1.3em;
+      padding: 0 0 0 18px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .post-body ul,
+    .post-body ol {
+      padding-left: 1.4em;
+      margin: 0 0 1.3em;
+    }
+
+    .post-body li { margin-bottom: 0.3em; }
+
+    .post-body a {
+      color: var(--rose-dark);
+      text-decoration: underline;
+      text-decoration-color: var(--rose);
+    }
+
+    .post-body a:hover { color: var(--ink); }
+
+    .post-body img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin: 1em 0 0.3em;
+      display: block;
+    }
+
+    .post-body img + em,
+    .post-body p:has(img) + p em:only-child {
+      display: block;
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 1.3em;
+      font-style: italic;
+    }
+
+    .post-body strong { color: var(--ink); font-weight: 600; }
+    .post-body em     { color: var(--ink-soft); }
+
+    /* footer */
+    .foot {
+      margin-top: 72px;
+      padding-top: 22px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .socials {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-bottom: 12px;
+    }
+
+    .socials img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.6;
+    }
+
+    .socials a:hover img { opacity: 1; }
+
+    [data-theme="dark"] .socials img {
+      filter: invert(1) brightness(1.2);
+    }
+
+    .copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <nav class="nav">
+      <div class="nav-logo">
+        <a href="../../index.html">ms. bubbles</a>
+      </div>
+      <div class="nav-links">
+        <a href="../../index.html">about</a>
+        <a href="../work.html">work</a>
+        <a href="../projects.html">projects</a>
+        <a href="../writing.html" class="on">writing</a>
+        <a href="../collections.html">collections</a>
+        <button class="theme-toggle" aria-label="Toggle dark mode">
+          <span class="toggle-icon"></span>
+        </button>
+      </div>
+    </nav>
+
+    <article class="post">
+      <p class="post-meta">
+        <span class="date">2026-10-01</span> &middot; <span class="cat">notes</span>
+      </p>
+      <h1 class="post-title">[notes-misc] September recap</h1>
+      <div class="post-body">
+        <p>🌼 things i did in the month of september: </p>
+<ul>
+<li><p>left prev internship and got another offer for engineering intern at a really great startup (my 3rd one so far)</p>
+</li>
+<li><p>built 2 project prototypes - one for a razorpay buildathon and another a vocal-trainer prototype (plan is to double down on the second one and launch it as a product soon)</p>
+</li>
+<li><p>led multiple events in the college&#39;s coding club, gave talks (one as a virtual keynote session in IIT jodhpur), conducted seminars, competitions. </p>
+</li>
+<li><p>attended college for &gt;6 days</p>
+</li>
+<li><p>shipped small features, fixed bugs, wrote design docs at work (it&#39;s a deeply engineered product, still with n number of things to improve and i love being a part of it!)</p>
+</li>
+</ul>
+<p>🔺somethings i couldn&#39;t do: </p>
+<ul>
+<li>didn&#39;t write a single blog (even tho i&#39;ve had a whole lot of ideas, might do this month)</li>
+<li>read ~2 chapters of ostep (had marked the ones i wanted to -_-) and implement a small something from in there</li>
+<li>resume dsa (NOT GONNA HAPPEN THIS YEAR FS)</li>
+<li>some more concepts and stuff that i wanted to start working on, didn&#39;t happen.</li>
+</ul>
+
+      </div>
+    </article>
+
+    <footer class="foot">
+      <div class="socials">
+        <a href="mailto:ritvika780@gmail.com"><img src="../../images/email.webp" alt="email" /></a>
+        <a href="https://github.com/magic-bubblez"><img src="../../images/github.webp" alt="github" /></a>
+        <a href="https://www.linkedin.com/in/miss-bubbles/"><img src="../../images/linkedin.webp" alt="linkedin" /></a>
+      </div>
+      <div class="copy">&copy; ms. bubbles</div>
+    </footer>
+
+  </div>
+</body>
+
+</html>
