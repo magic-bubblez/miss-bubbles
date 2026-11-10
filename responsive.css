@@ -1,0 +1,80 @@
+/* shared phone layout — loaded after each page's own styles */
+
+.nav-menu {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .wrap {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    gap: 0 10px;
+    margin-bottom: 26px;
+  }
+
+  .nav-logo {
+    flex: 1;
+  }
+
+  /* let links, toggle and menu button lay out directly in the nav row */
+  .nav-links {
+    display: contents;
+  }
+
+  .theme-toggle {
+    order: 1;
+  }
+
+  .nav-menu {
+    order: 2;
+    display: inline-block;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 16px;
+    line-height: 1;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .nav-menu::before {
+    content: '\2630';
+  }
+
+  .nav-menu,
+  .theme-toggle {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .nav.is-open .nav-menu {
+    color: var(--ink);
+    border-color: var(--ink-soft);
+  }
+
+  .nav.is-open .nav-menu::before {
+    content: '\2715';
+  }
+
+  .nav-links a {
+    display: none;
+    order: 3;
+    flex-basis: 100%;
+    padding: 10px 2px;
+    font-size: 16px;
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .nav.is-open .nav-links a {
+    display: block;
+  }
+
+  .nav.is-open .nav-links a:first-child {
+    margin-top: 14px;
+    border-top: 1px dashed var(--border);
+  }
+}

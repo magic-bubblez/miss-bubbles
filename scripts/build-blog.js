@@ -337,6 +337,7 @@ function postPageHtml({ title, date, category, bodyHtml }) {
       color: var(--muted);
     }
   </style>
+  <link rel="stylesheet" href="../../responsive.css" />
 </head>
 
 <body>
@@ -348,13 +349,15 @@ function postPageHtml({ title, date, category, bodyHtml }) {
       </div>
       <div class="nav-links">
         <a href="../../index.html">about</a>
-        <a href="../work.html">work</a>
         <a href="../projects.html">projects</a>
         <a href="../writing.html" class="on">writing</a>
+        <a href="../work.html">work</a>
+        <a href="../archive.html">archive</a>
         <a href="../collections.html">collections</a>
         <button class="theme-toggle" aria-label="Toggle dark mode">
           <span class="toggle-icon"></span>
         </button>
+        <button class="nav-menu" aria-label="Menu" aria-expanded="false"></button>
       </div>
     </nav>
 

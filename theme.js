@@ -40,6 +40,14 @@
   document.addEventListener('DOMContentLoaded', function () {
     tagLinks(theme);
 
+    var menu = document.querySelector('.nav-menu');
+    if (menu) {
+      menu.addEventListener('click', function () {
+        var open = menu.closest('.nav').classList.toggle('is-open');
+        menu.setAttribute('aria-expanded', String(open));
+      });
+    }
+
     var btn = document.querySelector('.theme-toggle');
     if (!btn) return;
     btn.addEventListener('click', function () {
