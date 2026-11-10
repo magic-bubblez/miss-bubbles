@@ -435,11 +435,15 @@ function updateBetweenMarkers(filePath, startMarker, endMarker, newInner) {
   fs.writeFileSync(filePath, next, 'utf8');
 }
 
-function updateSidebarCount(html, categoryId, count) {
-  // Matches: <label for="f-{cat}">... <span class="side-count">{N}</span>
+function countListItems(html, category) {
+  const re = new RegExp(`<li data-cat="${category ?? '[^"]*'}"`, 'g');
+  return (html.match(re) || []).length;
+}
+
+function updatePillCount(html, filter, count) {
+  // Matches: <label for="f-{filter}" class="pill">... <span class="pill-count">{N}</span>
   const re = new RegExp(
-    `(<label\\s+for="${categoryId}">[^<]*<span\\s+class="side-count">)\\d+(</span>)`,
-    'g'
+    `(<label\\s+for="f-${filter}"[^>]*>[^<]*<span\\s+class="pill-count">)\\d+(</span>)`
   );
   return html.replace(re, `$1${count}$2`);
 }
@@ -497,21 +501,14 @@ function main() {
   updateBetweenMarkers(WRITING_HTML, BLOGS_START_MARKER, BLOGS_END_MARKER, listItems);
   console.log('  updated pages/writing.html blog list');
 
-  // Update sidebar counts
-  const counts = { technical: 0, thinking: 0, observations: 0, notes: 0 };
-  for (const { category } of posts) {
-    if (category in counts) counts[category]++;
-  }
-  const total = posts.length;
-
+  // Count every listed item, including hand-added ones outside the markers
   let writingHtml = fs.readFileSync(WRITING_HTML, 'utf8');
-  writingHtml = updateSidebarCount(writingHtml, 'f-all', total);
-  writingHtml = updateSidebarCount(writingHtml, 'f-technical', counts.technical);
-  writingHtml = updateSidebarCount(writingHtml, 'f-thinking', counts.thinking);
-  writingHtml = updateSidebarCount(writingHtml, 'f-observations', counts.observations);
-  writingHtml = updateSidebarCount(writingHtml, 'f-notes', counts.notes);
+  writingHtml = updatePillCount(writingHtml, 'all', countListItems(writingHtml));
+  for (const category of VALID_CATEGORIES) {
+    writingHtml = updatePillCount(writingHtml, category, countListItems(writingHtml, category));
+  }
   fs.writeFileSync(WRITING_HTML, writingHtml, 'utf8');
-  console.log('  updated sidebar counts');
+  console.log('  updated filter counts');
 
   console.log(`\n✦ done. ${posts.length} post(s) built.\n`);
 }
